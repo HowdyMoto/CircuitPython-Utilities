@@ -115,6 +115,8 @@ def test_wifi():
         print("\tFailed to perform bandwidth test", e)
     return
 
+# =======================================
+# Download a ~1MB file and test speed
 def test_bandwidth():
     print(CPUTILS_STRING, "Testing download bandwidth...")
 
