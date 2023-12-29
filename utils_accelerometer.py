@@ -2,9 +2,10 @@ import time
 import board
 import adafruit_lis3dh
 
-# TODO Define enum for types of formats
-# Raw
-# Gs
+# TODO Define enum for types of output formats, such as:
+# Raw values
+# Raw values divided by -9.8 to give you Gs
+# Clamped values
 
 def print_values(lis3dh: adafruit_lis3dh.lis3dh, format="G"):
     # lis3dh.acceleration reports values in m / s ^ 2.
