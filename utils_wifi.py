@@ -101,9 +101,10 @@ def test_wifi():
     requests = adafruit_requests.Session(pool, context)
     try:
         response = requests.get(TEXT_URL)
-        print("\t"+ "-" * 40)
-        print("\t"+ response.text)
-        print("\t"+ "-" * 40)
+        if response.content:
+            print("\t\t"+ "Response successfully received!")
+        else:
+            print("\t\tSuccessful request, but empty response")
     except Exception as e:
         print("\tFailed to request data from", TEXT_URL, e)
 
@@ -133,19 +134,23 @@ def test_bandwidth():
 
     start_time = time.monotonic()
     try:
-        print("HTTP request for file...")
+        print("\tHTTP request for file...")
         response = requests.get(FILE_DOWNLOAD_URL)
+        print(response.content)
+        print(response.reason)
+        print(response.socket)
+
         if response.status_code == 200:
-            print("Success! HTTP code 200")
+            print("\tSuccess! HTTP code 200")
             # Calculate download speed
             end_time = time.monotonic()
             duration = end_time - start_time    # Time taken for download in seconds
             data_length = len(response.content)  # Length of data in bytes
             speed_bps = data_length / duration  # Speed in bytes per second
 
-            print("Downloaded", data_length, "bytes in", duration, "seconds.")
-            print("Download speed:", speed_bps, "Bytes per second.")
+            print("\tDownloaded", data_length, "bytes in", duration, "seconds.")
+            print("\tDownload speed:", speed_bps, "Bytes per second.")
         else:
             print("Failed to download test file. Status code:", response.status_code)
     except Exception as e:
-        print("\HTTP request failed:", e)
+        print("\tHTTP request error:", e)
