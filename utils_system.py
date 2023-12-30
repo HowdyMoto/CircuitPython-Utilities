@@ -29,13 +29,19 @@ def print_board_info():
             display.height
         )
         print("\tDisplay rotation:\t", display.rotation)
-        print("\tDisplay bus:", display.bus)
+        print("\tDisplay bus:\t", display.bus)
         # Some displays, like epaper, do not have an auto-refresh property
         if hasattr(display, 'auto_refresh'):
-            print("\t Display auto_refresh:", display.auto_refresh)
+            auto_refresh_attribute = display.auto_refresh
+        else:
+            auto_refresh_attribute = "None (probably e-paper)"
+        print("\tDisplay auto_refresh:\t", auto_refresh_attribute)
         # Some displays, like epaper, do not have a brightness property
         if hasattr(display, 'brightness'):
-            print("\tDisplay brightness:", display.brightness)
+            brightness_attribute = display.brightness
+        else:
+            brightness_attribute = "None (probably e-paper)"
+        print("\tDisplay brightness:\t", brightness_attribute)
     else:
         print("\tNo display detected")
     i2c_device_scan()
@@ -51,5 +57,5 @@ def i2c_device_scan():
     else:
         print("\tI2C device(s) found at:")
         for address in i2c_addresses:
-            print("\t", hex(address))
+            print("\t" + hex(address))
     i2c.unlock()
