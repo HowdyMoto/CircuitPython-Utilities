@@ -88,11 +88,11 @@ def test_wifi():
     if ping is None:
         print("\tCouldn't ping 'google.com' successfully")
     else:
-        print(f"\tPinging 'google.com' took: {ping / 1000} ms")
+        print("\tPinging 'google.com' took:", ping * 1000, "ms")
 
     # Third, get some text via HTTP request and print it
     TEXT_URL = "http://wifitest.adafruit.com/testwifi/index.html"
-    print("\tMaking HTTP request from", TEXT_URL)
+    print("\tHTTP Request from", TEXT_URL)
     import socketpool
     import ssl
     import adafruit_requests
@@ -100,30 +100,22 @@ def test_wifi():
     context = ssl.create_default_context()
     requests = adafruit_requests.Session(pool, context)
     try:
-        print(f"Fetching text from {TEXT_URL}")
         response = requests.get(TEXT_URL)
-        print("-" * 40)
-        print(response.text)
-        print("-" * 40)
+        print("\t"+ "-" * 40)
+        print("\t"+ response.text)
+        print("\t"+ "-" * 40)
     except Exception as e:
-        print("\tFailed to request data from", url, e)
-
-    print("\tTesting connection speed...")
-    try:
-        print("\tTODO: Pladceholder bandwidth test...")
-    except Exception as e:
-        print("\tFailed to perform bandwidth test", e)
-    return
+        print("\tFailed to request data from", TEXT_URL, e)
 
 # =======================================
-# Download a ~1MB file and test speed
+# Download a ~1MB file to test speed
 def test_bandwidth():
     print(CPUTILS_STRING, "Testing download bandwidth...")
 
+    # Abort if not connected to Wifi
     if not wifi.radio.enabled:
         print("\tWifi radio disabled")
         return
-    # TODO: abort if not connected to Wifi
     if not wifi.radio.connected:
         print("\tNot connected to WiFi")
         return
@@ -141,8 +133,10 @@ def test_bandwidth():
 
     start_time = time.monotonic()
     try:
+        print("HTTP request for file...")
         response = requests.get(FILE_DOWNLOAD_URL)
         if response.status_code == 200:
+            print("Success! HTTP code 200")
             # Calculate download speed
             end_time = time.monotonic()
             duration = end_time - start_time    # Time taken for download in seconds
@@ -154,4 +148,4 @@ def test_bandwidth():
         else:
             print("Failed to download test file. Status code:", response.status_code)
     except Exception as e:
-        print("\tFailed to download file:", e)
+        print("\HTTP request failed:", e)
