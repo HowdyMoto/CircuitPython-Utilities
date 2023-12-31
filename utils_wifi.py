@@ -13,7 +13,7 @@ import ipaddress
 CPUTILS_STRING = 'CP UTILS:'
 PING_IP = ipaddress.IPv4Address("8.8.8.8")
 # This shuould be a small file, since boards have very little RAM.
-FILE_DOWNLOAD_URL = 'https://freetestdata.com/wp-content/uploads/2023/04/1.17-MB.bmp'
+FILE_DOWNLOAD_URL = "http://wifitest.adafruit.com/testwifi/index.html"
 
 
 # Connect to Wifi
@@ -140,14 +140,14 @@ def test_bandwidth():
 
     start_time = time.monotonic()
     try:
-        print("\tHTTP request for file...")
+        print("\tHTTP request:", FILE_DOWNLOAD_URL)
         response = requests.get(FILE_DOWNLOAD_URL)
-        print(response.content)
-        print(response.reason)
-        print(response.socket)
+        print("\tStatus code:", response.status_code)
+        print("\tHeaders:")
+        for header, value in response.headers.items():
+            print(f"\t\t{header}: {value}")    
 
         if response.status_code == 200:
-            print("\tSuccess! HTTP code 200")
             # Calculate download speed
             end_time = time.monotonic()
             duration = end_time - start_time    # Time taken for download in seconds
