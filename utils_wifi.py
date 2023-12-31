@@ -1,12 +1,21 @@
+# utils_wifi.py -- Helper functions for wifi
+# By @howdymoto / Wright Bagwell
+# Inspired by TodBot's circuitpython-tricks: https://github.com/todbot/circuitpython-tricks
+# And by Adafruit/Kattni Rembor's CircuitPython Essentials: https://learn.adafruit.com/circuitpython-essentials/circuitpython-essentials
+# MIT license
+
 import os
 import wifi
+import ipaddress
 
-# These utils will print hepful info to the REPL
-# For readability, function calls start by printing this string
+# For readability, some function calls below start by printing this string
 # Data printed inside each function indented with \t for readability
 CPUTILS_STRING = 'CP UTILS:'
+PING_IP = ipaddress.IPv4Address("8.8.8.8")
+# This shuould be a small file, since boards have very little RAM.
+FILE_DOWNLOAD_URL = 'https://freetestdata.com/wp-content/uploads/2023/04/1.17-MB.bmp'
 
-# =======================================
+
 # Connect to Wifi
 # If user doesn't specify SSID and password, it's taken from settings.toml
 def connect_wifi(
@@ -14,29 +23,30 @@ def connect_wifi(
         password=os.getenv("CIRCUITPY_WIFI_PASSWORD")
     ):
     print(CPUTILS_STRING, "Connecting to WiFi...")
-    print("\tssid:", ssid)
-    print("\tpassword:", password)
 
-    # TODO: Help the user understand what to do if they don't specify an SSID and pwd,
-    # and do not have a settings.toml file set up.
-    if len(ssid) == 0:
+    # If user doesn't specify ssid/pwd in the function call, 
+    # they should specify it in settings.toml
+    if ssid is None or len(ssid) == 0:
         print(
-            "No SSID specified",
-            "Either specify in connect_wifi(),",
-            "or specify one in settings.toml",
-            "Please see https://docs.circuitpython.org/en/latest/docs/environment.html"
+            "\tNo SSID specified\n",
+            "\tEither specify in connect_wifi(),\n",
+            "\tor specify one in settings.toml\n",
+            "\tPlease see https://docs.circuitpython.org/en/latest/docs/environment.html"
         )
-
+        return
     try:
+        print("\tssid:", ssid)
+        print("\tpassword:", password)
         wifi.radio.connect(ssid, password)
         print("\tSuccessfully connected")
     except Exception as e:
         print("\tFailed to connect:", e)
     return
 
-# =======================================
+
 # Look for available WiFI networks (SSIDs)
-# Then, print each found SSID and RSSI (Strength)
+# Sort by RSSI (signal strength)
+# Then, print each found SSID and RSSI
 # Finally, return an array of SSIDs and RSSIs
 def scan_wifi_networks():
     print(CPUTILS_STRING, "Scanning for WiFi networks...")
@@ -47,10 +57,10 @@ def scan_wifi_networks():
     wifi.radio.stop_scanning_networks()
     networks = sorted(networks, key=lambda net: net.rssi, reverse=True)
     for network in networks:
-        print("\t", network.ssid, "\t\trssi:", network.rssi)
+        print("\t", network.ssid, "\t\trssi:", network.rssi, "dBm")
     return networks
 
-# =======================================
+
 # Print info about current WiFi network connection to the REPL.
 # Then, try a few network operations to verify it's working reliably.
 def test_wifi():
@@ -81,9 +91,7 @@ def test_wifi():
     print("\tAP Country:", wifi.radio.ap_info.country)
     print("\tAP RSSI:", wifi.radio.ap_info.rssi)
     
-    # Second, ping 8.8.8.8 - the primary DNS server for Google DNS
-    import ipaddress
-    PING_IP = ipaddress.IPv4Address("8.8.8.8")
+    # Second, ping PING_IP - the primary DNS server for Google DNS
     ping = wifi.radio.ping(ip=PING_IP)
     if ping is None:
         print("\tCouldn't ping 'google.com' successfully")
@@ -102,13 +110,13 @@ def test_wifi():
     try:
         response = requests.get(TEXT_URL)
         if response.content:
-            print("\t\t"+ "Response successfully received!")
+            print("\t"+ "HTTP Response successfully received!")
         else:
             print("\t\tSuccessful request, but empty response")
     except Exception as e:
         print("\tFailed to request data from", TEXT_URL, e)
 
-# =======================================
+
 # Download a ~1MB file to test speed
 def test_bandwidth():
     print(CPUTILS_STRING, "Testing download bandwidth...")
@@ -129,8 +137,6 @@ def test_bandwidth():
     pool = socketpool.SocketPool(wifi.radio)
     context = ssl.create_default_context()
     requests = adafruit_requests.Session(pool, context)
-
-    FILE_DOWNLOAD_URL = 'https://freetestdata.com/wp-content/uploads/2023/04/1.17-MB.bmp'
 
     start_time = time.monotonic()
     try:
