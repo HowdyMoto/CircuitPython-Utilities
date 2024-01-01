@@ -16,3 +16,14 @@ A collection of functions that show useful information about your board. Great f
 
 ### utils_wifi.py
 A collection of functions that help you find, connect to, and test wifi connections.
+
+## Boards I'll be testing
+Adafruit MagTag - works
+Adafruit Trinket M0 - works
+UnexpectedMaker Feather S2 - works
+
+Adafruit Pyportal Titano 
+Adafruit itsy Bitsy RP2040
+Adafruit QtPy esp32-S3 8MB no PSRAM
+Adafruit QtPy
+Lilygo T-Display
