@@ -24,7 +24,7 @@ def connect_wifi(
     ):
     print(CPUTILS_STRING, "Connecting to WiFi...")
 
-    # If user doesn't specify ssid/pwd in the function call, 
+    # If user doesn't specify ssid/pwd in the function call,
     # they should specify it in settings.toml
     if ssid is None or len(ssid) == 0:
         print(
@@ -35,7 +35,7 @@ def connect_wifi(
         )
         return
     try:
-        print("\tssid:", ssid)
+        print("\tSSID:", ssid)
         print("\tpassword:", password)
         wifi.radio.connect(ssid, password)
         print("\tSuccessfully connected")
@@ -90,7 +90,7 @@ def test_wifi():
     print("\tAP Channel:", wifi.radio.ap_info.channel)
     print("\tAP Country:", wifi.radio.ap_info.country)
     print("\tAP RSSI:", wifi.radio.ap_info.rssi)
-    
+
     # Second, ping PING_IP - the primary DNS server for Google DNS
     ping = wifi.radio.ping(ip=PING_IP)
     if ping is None:
@@ -145,7 +145,7 @@ def test_bandwidth():
         print("\tStatus code:", response.status_code)
         print("\tHeaders:")
         for header, value in response.headers.items():
-            print(f"\t\t{header}: {value}")    
+            print(f"\t\t{header}: {value}")
 
         if response.status_code == 200:
             # Calculate download speed
