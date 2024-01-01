@@ -35,7 +35,7 @@ def connect_wifi(
         )
         return
     try:
-        print("\tssid:", ssid)
+        print("\tSSID:", ssid)
         print("\tpassword:", password)
         wifi.radio.connect(ssid, password)
         print("\tSuccessfully connected")
