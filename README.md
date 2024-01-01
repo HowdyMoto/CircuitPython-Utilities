@@ -18,13 +18,13 @@ A collection of functions that show useful information about your board. Great f
 A collection of functions that help you find, connect to, and test wifi connections.
 
 ## Boards I'll be testing
--Adafruit MagTag - works
--Adafruit Trinket M0 - works
--UnexpectedMaker Feather S2 - works
+- Adafruit MagTag - works
+- Adafruit Trinket M0 - works
+- UnexpectedMaker Feather S2 - works
 
--Adafruit Pyportal Titano 
--Adafruit QtPy esp32-S3 8MB no PSRAM
--Adafruit QtPy
--Lilygo T-Display
+- Adafruit Pyportal Titano 
+- Adafruit QtPy esp32-S3 8MB no PSRAM
+- Adafruit QtPy
+- Lilygo T-Display
 
--Adafruit itsy Bitsy RP2040 - Does NOT work
+- Adafruit itsy Bitsy RP2040 - Does NOT work
