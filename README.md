@@ -9,7 +9,7 @@ This set of utilities is based on standards that Adafruit uses on their boards. 
 
 For example, to see if a board has a built-in ambient light sensor, I look for a pin called `LIGHT`, which is what Adafruit uses on all of their boards that have built-in ambient light sensors. Unexpected Maker names these pins `AMB`. 
 
-Over time, I hope this set of tools can add more support for non-Adafruit boards, but I will first focus on Adafruit boards. If you wish to see wider support for other manufacturer's boards, please submit PRs.
+Over time, I hope this set of tools can add more support for non-Adafruit boards, but I will first focus on Adafruit boards. If you wish to see wider support for other manufacturers' boards, please submit PRs.
 
 ### utils_system.py
 A collection of functions that show useful information about your board. Great for quickly gathering details without needing to look up spec sheets.
