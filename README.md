@@ -21,10 +21,10 @@ A collection of functions that help you find, connect to, and test wifi connecti
 - Adafruit MagTag - works
 - Adafruit Trinket M0 - works
 - UnexpectedMaker Feather S2 - works
-
+- Adafruit QtPy - works
+  
 - Adafruit Pyportal Titano 
 - Adafruit QtPy esp32-S3 8MB no PSRAM
-- Adafruit QtPy
 - Lilygo T-Display
 
 - Adafruit itsy Bitsy RP2040 - Does NOT work
