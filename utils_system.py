@@ -126,14 +126,21 @@ def get_i2c_info():
     Of course you can also manually create I2C connections
     this does not verify whether you can or that you have."""
 
-    i2c_detected = check_for_pin("I2C", "I2C/STEMMA QT")
+    i2c_detected = check_for_pin("STEMMA_I2C", "I2C/STEMMA QT")
     if i2c_detected:
         get_i2c_device_addresses()
 
 def get_i2c_device_addresses():
     """Scan the I2C bus for devices, and report their addresses in hex."""
 
-    i2c = board.I2C()
+    try:
+        i2c = board.I2C()
+        print("\tI2C pin found at board.I2C")
+    except:
+        i2c = board.STEMMA_I2C()
+        print("\t    I2C pin found at board.STEMMA_I2C")
+
+
     if not i2c.try_lock():
         print("Failed to lock I2C bus for scanning. Trying again...")
         pass
