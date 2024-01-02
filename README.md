@@ -28,15 +28,17 @@ A collection of functions that help you find, connect to, and test wifi connecti
 | Adafruit  | CLUE nRF52840 Express | WORKING |
 | Adafruit  | Trinket M0 with samd21e18 | WORKING |
 | Adafruit  | QT2040 Trinkey with rp2040 | WORKING |
+| Adafruit  | QT Py M0 | WORKING |
+| Adafruit  | QtPy esp32-S3 8MB no PSRAM | WORKING |
+| Adafruit  | Itsy Bitsy RP2040 |  WORKING |
 | Raspberry Pi | Pico | WORKING |
 | UnexpectedMaker | Feather S2 | WORKING |
 | LILYGO | T8 ESP32-S2 w/Display | WORKING |
 | LILYGO | TTGO T-Display | UKNOWN - can't get CP to run on it |
 | LILYGO | TTGO T-Display S3 | WORKING (with T-Embed ESP32S3 UF2) |
 | LILYGO | TTGO T-Display S3 AMOLED | WORKING (with ESP32-S3-DevKitC-1-N8R8 UF2 |
-| Adafruit  | QT Py M0 | WORKING |
-| Adafruit  | QtPy esp32-S3 8MB no PSRAM | WORKING |
-| Adafruit  | Itsy Bitsy RP2040 |  WORKING |
+| LILYGO | T-Camera S3 | WORKING (with YD-ESP32-S3 (N16R8) UF2) |
+
 | Adafruit  | Pyportal Titano 8 | UKNOWN |
 
 ## TODO
