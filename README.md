@@ -32,8 +32,19 @@ A collection of functions that help you find, connect to, and test wifi connecti
 - Adafruit Pyportal Titano 
 - Lilygo T-Display - uknown, trying to get CP running on it
 
-Boards exhibiting I2C ping issue `RuntimeError: No pull up found on SDA or SCL; check your wiring`
+Boards exhibiting I2C issue `RuntimeError: No pull up found on SDA or SCL; check your wiring`
 
 - Adafruit Itsy Bitsy RP2040
 - Adafruit QT Py M0 with samd21e18
 - Adafruit QtPy esp32-S3 8MB no PSRAM
+
+| Manufacturer  | Board Name | Status
+| ------------- | ------------- |
+| Adafruit  | MagTag | WORKING
+| Adafruit  | CLUE nRF52840 Express | WORKING
+| Adafruit  | Trinket M0 with samd21e18 | WORKING
+| Adafruit  | QT2040 Trinkey with rp2040 | WORKING
+| Adafruit  | Pyportal Titano 8 | UKNOWN
+| Adafruit  | Itsy Bitsy RP2040 | NOT WORKING No pull up found on SDA or SCL
+| Adafruit  | QT Py M0 | NOT WORKING No pull up found on SDA or SCL
+| Adafruit  | QtPy esp32-S3 8MB no PSRAM | NOT WORKING No pull up found on SDA or SCL
