@@ -33,7 +33,7 @@ def print_board_info():
 
     print("\tBoard Name (os):\t" + os.uname().machine)
     print("\tBoard Name (board):\t" + board.board_id)
-    print("\tCPU:\t\t" + os.uname().sysname)
+    print("\tCPU:\t" + os.uname().sysname)
     print("\tCircuitPython ver:\t" + os.uname().release)
 
     # Anything else you're looking for can easily be added with checK_for_pin()
@@ -49,7 +49,7 @@ def print_board_info():
     get_temperature_info()
     get_speakeroutput_info()
     get_microphone_info()
-
+    get_accelgyro_info()
 
 def get_mem_storage_info():
     """Show details about storage and memory"""
@@ -95,7 +95,7 @@ def get_status_led_info():
     """See if there's a simple status LED on the board.
     Almost always set to board.LED pin"""
 
-    check_for_pin("LED","status LED\t")
+    check_for_pin("LED","status LED")
 
 def get_dotstar_info():
     """See if there's a simple status indicator LED on the board.
@@ -103,13 +103,13 @@ def get_dotstar_info():
     but there may be some out there that don't have one.
     Almost always set to board.LED pin"""
 
-    check_for_pin("APA102_SCK","DotStar LED\t")
+    check_for_pin("APA102_SCK","DotStar LED")
 
 def get_neopixel_info():
     """See if there's a Neopixel LED on the board.
     Almost always set to board.NEOPIXEL pin"""
 
-    check_for_pin("NEOPIXEL","Neopixel LED\t")
+    check_for_pin("NEOPIXEL","Neopixel LED")
     NEOPIXEL_PIN = 'NEOPIXEL'
 
 def get_lightsensor_info():
@@ -126,7 +126,7 @@ def get_i2c_info():
     Of course you can also manually create I2C connections
     this does not verify whether you can or that you have."""
 
-    i2c_detected = check_for_pin("I2C", "I2C/STEMMA QT\t")
+    i2c_detected = check_for_pin("I2C", "I2C/STEMMA QT")
     if i2c_detected:
         get_i2c_device_addresses()
 
@@ -134,7 +134,6 @@ def get_i2c_device_addresses():
     """Scan the I2C bus for devices, and report their addresses in hex."""
 
     i2c = board.I2C()
-    print("\t\tScan for I2C devices...")
     if not i2c.try_lock():
         print("Failed to lock I2C bus for scanning. Trying again...")
         pass
@@ -142,17 +141,16 @@ def get_i2c_device_addresses():
     if len(i2c_addresses) == 0:
         print("\tNo I2C devices found")
     else:
-        print("\t\tI2C device(s) found at:")
+        print("\t    I2C device(s) found at:")
         for address in i2c_addresses:
             print("\t\t" + hex(address))
     i2c.unlock()
-    print("\tI2C scan complete")
 
 def get_uart_info():
     """See if there's UART serial output on the board.
     Almost always set to board.UART"""
 
-    check_for_pin("UART", "UART pin\t")
+    check_for_pin("UART", "UART pin")
 
 def get_spi_info():
     """See if there's SPI output on the board.
@@ -164,7 +162,7 @@ def get_temperature_info():
     """See if there's a Temperature sensot on the board.
     Almost always set to board.TEMPERATURE pin"""
 
-    check_for_pin("TEMPERATURE","temperature sensor")
+    check_for_pin("TEMPERATURE","temp sensor")
 
 def get_speakeroutput_info():
     """See if there's a speaker output on the board.
