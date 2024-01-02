@@ -139,7 +139,7 @@ def get_i2c_device_addresses():
         pass
     i2c_addresses = i2c.scan()
     if len(i2c_addresses) == 0:
-        print("\tNo I2C devices found")
+        print("\t    No connected I2C devices found")
     else:
         print("\t    I2C device(s) found at:")
         for address in i2c_addresses:
