@@ -20,23 +20,7 @@ A collection of functions that show useful information about your board. Great f
 ### utils_wifi.py
 A collection of functions that help you find, connect to, and test wifi connections.
 
-## Boards I'll be testing
-- Adafruit MagTag - works
-- Adafruit CLUE nRF52840 Express - works
-- Adafruit Trinket M0 with samd21e18 - works
-- Adafruit QT2040 Trinkey with rp2040 - works
-- Raspberry Pi Pico with rp2040 - works
-- UnexpectedMaker Feather S2 - works
-- LILYGO TTGO T8 ESP32-S2 w/Display - works
-  
-- Adafruit Pyportal Titano 
-- Lilygo T-Display - uknown, trying to get CP running on it
-
-Boards exhibiting I2C issue `RuntimeError: No pull up found on SDA or SCL; check your wiring`
-
-- Adafruit Itsy Bitsy RP2040
-- Adafruit QT Py M0 with samd21e18
-- Adafruit QtPy esp32-S3 8MB no PSRAM
+## Boards tested
 
 | Manufacturer  | Board Name | Status |
 | ------------- | ------------- | ------------- |
