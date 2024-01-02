@@ -3,6 +3,9 @@ A collection of CircuitPython utilities and helper functions to help you get mor
 
 This code is under the MIT license, so I encourage you to do as you please with it.
 
+# CircuitPython version
+These utilities were created and tested with CircuitPython 9.0.0 Alpha 6, and will be updated as required with future versions of CircuitPython.
+
 # Usage 
 
 This set of utilities is based on standards that Adafruit uses on their boards. Adafruit names their pins consistently on all of their boards, and I assume their pin names in the code below. 
