@@ -71,25 +71,25 @@ def get_display_info():
     if builtin_display:
         display = board.DISPLAY
         print(
-            "\tDisplay size:\t",
+            "\t\tsize:\t\t",
             display.width,
             "x",
             display.height
         )
-        print("\tDisplay rotation:\t", display.rotation)
-        print("\tDisplay bus:\t", display.bus)
+        print("\t\trotation:\t\t", display.rotation)
+        print("\t\tbus:\t\t", display.bus)
         # Some displays, like epaper, do not have an auto-refresh property
         if hasattr(display, 'auto_refresh'):
             auto_refresh_attribute = display.auto_refresh
         else:
             auto_refresh_attribute = "None (probably e-paper)"
-        print("\tDisplay auto_refresh:\t", auto_refresh_attribute)
+        print("\t\tauto_refresh:\t\t", auto_refresh_attribute)
         # Some displays, like epaper, do not have a brightness property
         if hasattr(display, 'brightness'):
             brightness_attribute = display.brightness
         else:
             brightness_attribute = "None (probably e-paper)"
-        print("\tDisplay brightness:\t", brightness_attribute)
+        print("\t\tbrightness:\t\t", brightness_attribute)
 
 def get_status_led_info():
     """See if there's a simple status LED on the board.
@@ -128,14 +128,13 @@ def get_i2c_info():
 
     i2c_detected = check_for_pin("I2C", "I2C/STEMMA QT\t")
     if i2c_detected:
-        return
         get_i2c_device_addresses()
 
 def get_i2c_device_addresses():
     """Scan the I2C bus for devices, and report their addresses in hex."""
 
     i2c = board.I2C()
-    print("\tScanning for I2C devices...")
+    print("\t\tScan for I2C devices...")
     if not i2c.try_lock():
         print("Failed to lock I2C bus for scanning. Trying again...")
         pass
@@ -143,9 +142,9 @@ def get_i2c_device_addresses():
     if len(i2c_addresses) == 0:
         print("\tNo I2C devices found")
     else:
-        print("\tI2C device(s) found at:")
+        print("\t\tI2C device(s) found at:")
         for address in i2c_addresses:
-            print("\t" + hex(address))
+            print("\t\t" + hex(address))
     i2c.unlock()
     print("\tI2C scan complete")
 

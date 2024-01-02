@@ -25,6 +25,7 @@ A collection of functions that help you find, connect to, and test wifi connecti
 - Adafruit Trinket M0 - works
 - UnexpectedMaker Feather S2 - works
 - Adafruit QtPy - works
+- LILYGO TTGO T8 ESP32-S2 w/Display - works
   
 - Adafruit Pyportal Titano 
 - Adafruit QtPy esp32-S3 8MB no PSRAM
