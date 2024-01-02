@@ -22,13 +22,18 @@ A collection of functions that help you find, connect to, and test wifi connecti
 
 ## Boards I'll be testing
 - Adafruit MagTag - works
-- Adafruit Trinket M0 - works
+- Adafruit CLUE nRF52840 Express - works
+- Adafruit Trinket M0 with samd21e18 - works
+- Adafruit QT2040 Trinkey with rp2040 - works
+- Raspberry Pi Pico with rp2040 - works
 - UnexpectedMaker Feather S2 - works
-- Adafruit QtPy - works
 - LILYGO TTGO T8 ESP32-S2 w/Display - works
   
 - Adafruit Pyportal Titano 
-- Adafruit QtPy esp32-S3 8MB no PSRAM
-- Lilygo T-Display
+- Lilygo T-Display - uknown, trying to get CP running on it
 
-- Adafruit itsy Bitsy RP2040 - Does NOT work
+Boards exhibiting I2C ping issue `RuntimeError: No pull up found on SDA or SCL; check your wiring`
+
+- Adafruit Itsy Bitsy RP2040
+- Adafruit QT Py M0 with samd21e18
+- Adafruit QtPy esp32-S3 8MB no PSRAM
