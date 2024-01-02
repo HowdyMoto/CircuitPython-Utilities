@@ -34,10 +34,10 @@ A collection of functions that help you find, connect to, and test wifi connecti
 | LILYGO | TTGO T-Display | UKNOWN - can't get CP to run on it |
 | LILYGO | TTGO T-Display S3 | WORKING (with T-Embed ESP32S3 UF2) |
 | LILYGO | TTGO T-Display S3 AMOLED | WORKING (with ESP32-S3-DevKitC-1-N8R8 UF2 |
+| Adafruit  | QT Py M0 | WORKING |
+| Adafruit  | QtPy esp32-S3 8MB no PSRAM | WORKING |
+| Adafruit  | Itsy Bitsy RP2040 |  WORKING |
 | Adafruit  | Pyportal Titano 8 | UKNOWN |
-| Adafruit  | Itsy Bitsy RP2040 | NOT WORKING No pull up found on SDA or SCL |
-| Adafruit  | QT Py M0 | NOT WORKING No pull up found on SDA or SCL |
-| Adafruit  | QtPy esp32-S3 8MB no PSRAM | NOT WORKING No pull up found on SDA or SCL |
 
 ## TODO
 gather info on built-in buttons
