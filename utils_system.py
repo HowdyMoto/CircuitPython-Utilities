@@ -71,25 +71,25 @@ def get_display_info():
     if builtin_display:
         display = board.DISPLAY
         print(
-            "\t\tsize:\t\t",
+            "\t\tsize:\t",
             display.width,
             "x",
             display.height
         )
-        print("\t\trotation:\t\t", display.rotation)
-        print("\t\tbus:\t\t", display.bus)
+        print("\t\trotation:\t", display.rotation)
+        print("\t\tbus:\t", display.bus)
         # Some displays, like epaper, do not have an auto-refresh property
         if hasattr(display, 'auto_refresh'):
             auto_refresh_attribute = display.auto_refresh
         else:
             auto_refresh_attribute = "None (probably e-paper)"
-        print("\t\tauto_refresh:\t\t", auto_refresh_attribute)
+        print("\t\tauto_refresh:", auto_refresh_attribute)
         # Some displays, like epaper, do not have a brightness property
         if hasattr(display, 'brightness'):
             brightness_attribute = display.brightness
         else:
             brightness_attribute = "None (probably e-paper)"
-        print("\t\tbrightness:\t\t", brightness_attribute)
+        print("\t\tbrightness:\t", brightness_attribute)
 
 def get_status_led_info():
     """See if there's a simple status LED on the board.
@@ -156,7 +156,7 @@ def get_spi_info():
     """See if there's SPI output on the board.
     Almost always set to board.SPI"""
 
-    check_for_pin("SPI", "SPI pin\t")
+    check_for_pin("SPI", "SPI pin")
 
 def get_temperature_info():
     """See if there's a Temperature sensot on the board.
@@ -180,4 +180,4 @@ def get_accelgyro_info():
     """See if there's SPI on the board.
     Almost always set to board.SPI"""
 
-    check_for_pin("ACCELEROMETER_GYRO_INTERRUPT", "SPI pin\t")
+    check_for_pin("ACCELEROMETER_GYRO_INTERRUPT", "SPI pin")
