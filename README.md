@@ -38,3 +38,8 @@ A collection of functions that help you find, connect to, and test wifi connecti
 | Adafruit  | Itsy Bitsy RP2040 | NOT WORKING No pull up found on SDA or SCL |
 | Adafruit  | QT Py M0 | NOT WORKING No pull up found on SDA or SCL |
 | Adafruit  | QtPy esp32-S3 8MB no PSRAM | NOT WORKING No pull up found on SDA or SCL |
+
+## TODO
+gather info on built-in buttons
+report whether wifi capabilities exist, for ESPSPI chips and for native wifi on newer ESP32 CPUs
+report on bluetooth capabilities
