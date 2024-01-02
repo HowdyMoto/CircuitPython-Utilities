@@ -44,6 +44,10 @@ Boards exhibiting I2C issue `RuntimeError: No pull up found on SDA or SCL; check
 | Adafruit  | CLUE nRF52840 Express | WORKING |
 | Adafruit  | Trinket M0 with samd21e18 | WORKING |
 | Adafruit  | QT2040 Trinkey with rp2040 | WORKING |
+| Raspberry Pi | Pico | WORKING |
+| UnexpectedMaker | Feather S2 | WORKING |
+| LILYGO | T8 ESP32-S2 w/Display | WORKING |
+| LILYGO | TTGO T-Display | UKNOWN - can't get CP to run on it |
 | Adafruit  | Pyportal Titano 8 | UKNOWN |
 | Adafruit  | Itsy Bitsy RP2040 | NOT WORKING No pull up found on SDA or SCL |
 | Adafruit  | QT Py M0 | NOT WORKING No pull up found on SDA or SCL |
