@@ -42,6 +42,6 @@ A collection of functions that help you find, connect to, and test wifi connecti
 | Adafruit  | Pyportal Titano 8 | UKNOWN |
 
 ## TODO
-gather info on built-in buttons
-report whether wifi capabilities exist, for ESPSPI chips and for native wifi on newer ESP32 CPUs
-report on bluetooth capabilities
+- gather info on built-in buttons
+- report whether wifi capabilities exist, for ESPSPI chips and for native wifi on newer ESP32 CPUs
+- report on bluetooth capabilities
