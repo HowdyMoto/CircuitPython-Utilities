@@ -10,7 +10,7 @@ They may work fine with older versions of CircuitPython, but I'm not making any 
 
 # Usage 
 
-This set of utilities is based on standards that Adafruit uses on their boards. Adafruit names their pins consistently on all of their boards, and I assume their pin names in the code below. 
+This set of utilities is based on standards that Adafruit uses on their boards. Adafruit is pretty (bot not totally) consistent in naming pins on their boards, so I assume their pin names in the code below. As I learn what naming patterns other manufacturers use, I'll add them.
 
 For example, to see if a board has a built-in ambient light sensor, I look for a pin called `LIGHT`, which is what Adafruit uses on all of their boards that have built-in ambient light sensors. Unexpected Maker names these pins `AMB`. 
 
