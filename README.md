@@ -36,7 +36,7 @@ A collection of functions that help you find, connect to, and test wifi connecti
 | LILYGO | T8 ESP32-S2 w/Display | WORKING |
 | LILYGO | TTGO T-Display | UKNOWN - can't get CP to run on it |
 | LILYGO | TTGO T-Display S3 | WORKING (with T-Embed ESP32S3 UF2) |
-| LILYGO | TTGO T-Display S3 AMOLED | WORKING (with ESP32-S3-DevKitC-1-N8R8 UF2 |
+| LILYGO | TTGO T-Display S3 AMOLED | WORKING (with ESP32-S3-DevKitC-1-N8R8 UF2) |
 | LILYGO | T-Camera S3 | WORKING (with YD-ESP32-S3 (N16R8) UF2) |
 
 | Adafruit  | Pyportal Titano 8 | UKNOWN |
