@@ -3,8 +3,10 @@ A collection of CircuitPython utilities and helper functions to help you get mor
 
 This code is under the MIT license, so I encourage you to do as you please with it.
 
-# CircuitPython version
+# Built on and tested with CircuitPython 9
 These utilities were created and tested with CircuitPython 9.0.0 Alpha 6, and will be updated as required with future versions of CircuitPython.
+
+They may work fine with older versions of CircuitPython, but I'm not making any effort to support them.
 
 # Usage 
 
