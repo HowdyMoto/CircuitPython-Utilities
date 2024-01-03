@@ -17,8 +17,40 @@ Over time, I hope this set of tools can add more support for non-Adafruit boards
 ### utils_system.py
 A collection of functions that show useful information about your board. Great for quickly gathering details without needing to look up spec sheets.
 
+To print (to the REPL) lots of educational details about your board:
+```
+import utils_sysetem.py
+
+utils_system.print_board_info()
+```
+`print_board_info()` calls a series of fucntions that gather more granular info about your board. If you want granular information, look inside of `utils_sysetem.py`. It's pretty self-explanatory.
+
 ### utils_wifi.py
 A collection of functions that help you find, connect to, and test wifi connections.
+
+To connect to wifi:
+```
+import utils_wifi.py
+utils_wifi.connect_wifi()
+```
+
+To find all of the local available WiFi networks, sorted by signal strength:
+```
+import utils_wifi.py
+utils_wifi.scan_wifi_networks()
+```
+
+To gather details about your wifi connection and perform some basic tests:
+```
+import utils_wifi.py
+utils_wifi.test_wifi()
+```
+
+To do an HTTP get request and report bandwith (this isn't very helpful at all, since you can't download much of anything to a microcontroller. But I'll be working on ways to test bandwidth, so that in the future this could be useful if you have the memory and storage space to download or upload larger chunks of data) :
+```
+import utils_wifi.py
+utils_wifi.test_bandwidth()
+```
 
 ## Boards tested
 
