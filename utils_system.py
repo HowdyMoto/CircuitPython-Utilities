@@ -66,7 +66,7 @@ def get_board_id():
     boardNameOS = os.uname().machine
     boardNameOSDescriptor = "\tBoard Name (os):"
     boardNameBoard = board.board_id
-    boardNameBoardDescriptor = "\tBoard Name (os):"
+    boardNameBoardDescriptor = "\tBoard Name (board):"
     print(f"{boardNameOSDescriptor: <{COLUMN1_WIDTH}} {boardNameOS: <{COLUMN1_WIDTH}}")
     print(f"{boardNameBoardDescriptor: <{COLUMN1_WIDTH}} {boardNameBoard:<{COLUMN1_WIDTH}}")
 
