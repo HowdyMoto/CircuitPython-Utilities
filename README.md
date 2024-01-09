@@ -30,7 +30,7 @@ utils_system.print_board_info()
 If you want just a subset of that information, pick from the functions in get_all_info() that you need, or look inside of `utils_sysetem.py`. It's pretty self-explanatory.
 
 ### utils_wifi.py
-A collection of functions that help you find, connect to, and test wifi connections.
+A collection of functions that help you find, connect to, and test wifi connections. Currently only useful for esp32 chips with native wi-fi. Boards with esp32 co-processors need more work.
 
 To connect to wifi:
 ```
