@@ -14,7 +14,8 @@ COLUMN_PINNAME_WIDTH = 32
 INDENT1 = 20
 
 # A function to check for a pin
-# Specify the pin and a description of what it does
+# First param is the pin name
+# Second param is a descriptor of the pin, which is shown in the REPL when it checks for the pin. 
 # If you're using a board not made by Adafruit, you can use this function to search for non-standard pin names.
 def check_for_pin(pin, descriptor):
     """Check for a pin on the board.
