@@ -7,6 +7,7 @@
 import os
 import gc
 import board
+import microcontroller
 
 CPUTILS_STRING = 'CP UTILS:'
 COLUMN1_WIDTH = 22
@@ -15,7 +16,7 @@ INDENT1 = 20
 
 # A function to check for a pin
 # First param is the pin name
-# Second param is a descriptor of the pin, which is shown in the REPL when it checks for the pin. 
+# Second param is a descriptor of the pin, which is shown in the REPL when it checks for the pin.
 # If you're using a board not made by Adafruit, you can use this function to search for non-standard pin names.
 def check_for_pin(pin, descriptor):
     """Check for a pin on the board.
@@ -72,18 +73,36 @@ def get_board_id():
     print(f"{boardNameBoardDescriptor: <{COLUMN1_WIDTH}} {boardNameBoard:<{COLUMN1_WIDTH}}")
 
 def get_cpu_info():
-    """Show what CPU/Chip the board has"""
+    """Show microcontroller/CPU details"""
 
-    cpu_descriptor = "\tCPU:"
+    cpu_type_descriptor = "\tCPU:"
     cpu_type = os.uname().sysname
-    print(f"{cpu_descriptor: <{COLUMN1_WIDTH}} {cpu_type: <{COLUMN1_WIDTH}}")    
-    
+
+    cpu_frequency_descriptor = "\tCPU 0 frequency:"
+    cpu_frequency_unformatted = microcontroller.cpu.frequency
+    cpu_frequency =  f"{cpu_frequency_unformatted:,}"
+
+    cpu_temperature_descriptor = "\tCPU 0 temperature:"
+    cpu_temperature = microcontroller.cpu.temperature
+    if cpu_temperature == None:
+        cpu_temperature = "Not available"
+
+    cpu_voltage_descriptor = "\tCPU 0 voltage:"
+    cpu_voltage = microcontroller.cpu.voltage
+    if cpu_voltage == None:
+        cpu_voltage = "Not available"
+
+    print(f"{cpu_type_descriptor: <{COLUMN1_WIDTH}} {cpu_type: <{COLUMN1_WIDTH}}")
+    print(f"{cpu_frequency_descriptor: <{COLUMN1_WIDTH}} {cpu_frequency: <{COLUMN1_WIDTH}}")
+    print(f"{cpu_temperature_descriptor: <{COLUMN1_WIDTH}} {cpu_temperature: <{COLUMN1_WIDTH}}")
+    print(f"{cpu_voltage_descriptor: <{COLUMN1_WIDTH}} {cpu_voltage: <{COLUMN1_WIDTH}}")
+
 def get_circuitpython_info():
     """Show CircuitPython version"""
 
     cp_descriptor = "\tCircuitPython ver:"
     cp_version = os.uname().release
-    print(f"{cp_descriptor: <{COLUMN1_WIDTH}} {cp_version: <{COLUMN1_WIDTH}}")    
+    print(f"{cp_descriptor: <{COLUMN1_WIDTH}} {cp_version: <{COLUMN1_WIDTH}}")
 
 def get_mem_storage_info():
     """Show details about storage and memory"""
@@ -165,12 +184,19 @@ def get_lightsensor_info():
     check_for_pin("AMB","Ambient light sensor")
 
 def get_i2c_info():
-    """See if there's an I2C/STEMMA QT connector on the board.
-    Some boards have board.I2C but no STEMMA so I check for STEMMA_I2C
-    Of course you can also manually create I2C connections. This does not verify whether you can or that you have."""
+    """See if there's an STEMMA QT/I2C connector on the board.
+    Of course you can also manually create I2C connections.
+    This does not verify whether you can, or that you have."""
 
-    i2c_detected = check_for_pin("STEMMA_I2C", "I2C STEMMA QT")
-    if i2c_detected:
+    stemma_i2c_detected = check_for_pin("STEMMA_I2C", "I2C STEMMA QT")
+    i2c_detected = check_for_pin("I2C", "I2C bus")
+
+    if board.I2C() == board.STEMMA_I2C():
+        print("\t    I2C = STEMMA_I2C")
+    else:
+        print("\t    I2C and STEMMA_I2C are separate buses")
+
+    if stemma_i2c_detected:
         get_i2c_device_addresses()
 
 def get_i2c_device_addresses():
