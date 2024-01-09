@@ -25,7 +25,9 @@ import utils_sysetem.py
 
 utils_system.print_board_info()
 ```
-`print_board_info()` calls a series of fucntions that gather more granular info about your board. If you want granular information, look inside of `utils_sysetem.py`. It's pretty self-explanatory.
+`get_all_info()` calls a series of fucntions that gather more granular info about your board. 
+
+If you want just a subset of that information, pick from the functions in get_all_info() that you need, or look inside of `utils_sysetem.py`. It's pretty self-explanatory.
 
 ### utils_wifi.py
 A collection of functions that help you find, connect to, and test wifi connections.
@@ -36,7 +38,7 @@ import utils_wifi.py
 utils_wifi.connect_wifi()
 ```
 
-To find all of the local available WiFi networks, sorted by signal strength:
+To find all of the local available WiFi networks, then put them into an array, sorted by signal strength:
 ```
 import utils_wifi.py
 utils_wifi.scan_wifi_networks()
@@ -48,11 +50,12 @@ import utils_wifi.py
 utils_wifi.test_wifi()
 ```
 
-To do an HTTP get request and report bandwith (this isn't very helpful at all, since you can't download much of anything to a microcontroller. But I'll be working on ways to test bandwidth, so that in the future this could be useful if you have the memory and storage space to download or upload larger chunks of data) :
+To do an HTTP get request and report bandwith, you can try:
 ```
 import utils_wifi.py
 utils_wifi.test_bandwidth()
 ```
+Admittedly, this isn't very helpful at all, since you can't download much of anything to a microcontroller that has so little memory and storage. This is a theoretical test, not a practical test at all. But I'll keep working on ways to test bandwidth, so that future boards that have more memory and storage can attempt a more robust test.
 
 ## Boards tested
 
