@@ -72,6 +72,8 @@ For example, here are some results I've seen:
 - Adafruit MagTag: 17.51 seconds to run integer math tests, 23.13 seconds to run float math tests.
 - Adafruit Clue: 3.41 seconds to run integer math tests, 4.91 seconds to run float math tests.
 
+_________________
+
 ## Boards tested
 
 | Manufacturer  | Board Name | Status |
@@ -92,6 +94,8 @@ For example, here are some results I've seen:
 | LILYGO | T-Camera S3 | WORKING (with YD-ESP32-S3 (N16R8) UF2) |
 
 | Adafruit  | Pyportal Titano 8 | UKNOWN |
+
+_________________
 
 ## TODO
 - gather info on built-in buttons
