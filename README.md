@@ -57,6 +57,20 @@ utils_wifi.test_bandwidth()
 ```
 Admittedly, this isn't very helpful at all, since you can't download much of anything to a microcontroller that has so little memory and storage. This is a theoretical test, not a practical test at all. But I'll keep working on ways to test bandwidth, so that future boards that have more memory and storage can attempt a more robust test.
 
+### utils_benchmark.py
+Very simple benchmarks that help you understand the realtive performance of your microprocessor.
+
+To see how fast your processor does integer and floating point math:
+```
+import utils_benchmark.py
+utils_benchmark.run_benchmark()
+```
+
+For example, here are some results I've seen:
+Qt Py: 28.72 seconds to run integer math tests, 44.33 seconds to run float math tests.
+Qt Py ESP32-S3 No PSRAM: 2.69 seconds to run integer math tests, 3.66 seconds to run float math tests.
+MagTag: 3.41 seconds to run integer math tests, 4.91 seconds to run float math tests.
+
 ## Boards tested
 
 | Manufacturer  | Board Name | Status |
