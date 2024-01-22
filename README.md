@@ -67,9 +67,9 @@ utils_benchmark.run_benchmark()
 ```
 
 For example, here are some results I've seen:
-Qt Py: 28.72 seconds to run integer math tests, 44.33 seconds to run float math tests.
-Qt Py ESP32-S3 No PSRAM: 2.69 seconds to run integer math tests, 3.66 seconds to run float math tests.
-MagTag: 3.41 seconds to run integer math tests, 4.91 seconds to run float math tests.
+- Qt Py: 28.72 seconds to run integer math tests, 44.33 seconds to run float math tests.
+- Qt Py ESP32-S3 No PSRAM: 2.69 seconds to run integer math tests, 3.66 seconds to run float math tests.
+- MagTag: 3.41 seconds to run integer math tests, 4.91 seconds to run float math tests.
 
 ## Boards tested
 
