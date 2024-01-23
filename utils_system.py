@@ -113,15 +113,15 @@ def get_mem_storage_info():
     free_mem_descriptor = "\tFree memory:"
 
     fs_stat = os.statvfs('/')
-    print(f"{disk_size_descriptor:<{COLUMN1_WIDTH}}{(fs_stat[0] * fs_stat[2] / 1024 / 1024):<{COLUMN1_WIDTH}} MB")
-    print(f"{free_space_descriptor:<{COLUMN1_WIDTH}}{(fs_stat[0] * fs_stat[3] / 1024 / 1024):<{COLUMN1_WIDTH}} MB")
+    print(f"{disk_size_descriptor:<{COLUMN1_WIDTH}}{(fs_stat[0] * fs_stat[2] / 1024 ):<{COLUMN1_WIDTH}} KB")
+    print(f"{free_space_descriptor:<{COLUMN1_WIDTH}}{(fs_stat[0] * fs_stat[3] / 1024 ):<{COLUMN1_WIDTH}} KB")
 
-    free_memory = gc.mem_free() / 1024 / 1024
-    allocated_memory = gc.mem_alloc() / 1024 / 1024
+    free_memory = gc.mem_free() / 1024
+    allocated_memory = gc.mem_alloc() / 1024
     total_memory = allocated_memory + free_memory
 
-    print(f"{total_mem_descriptor:<{COLUMN1_WIDTH}} {total_memory:<{COLUMN1_WIDTH}}", "MB")
-    print(f"{free_mem_descriptor:<{COLUMN1_WIDTH}} {free_memory:<{COLUMN1_WIDTH}}", "MB")
+    print(f"{total_mem_descriptor:<{COLUMN1_WIDTH}} {total_memory:<{COLUMN1_WIDTH}}", "KB")
+    print(f"{free_mem_descriptor:<{COLUMN1_WIDTH}} {free_memory:<{COLUMN1_WIDTH}}", "KB")
 
 # See if the board has a display. If so, show details.
 # Almost always set to board.DISPLAY pin
