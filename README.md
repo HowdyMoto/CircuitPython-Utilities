@@ -71,6 +71,8 @@ For example, here are some results I've seen:
 - Adafruit Qt Py ESP32-S3 No PSRAM: 2.69 seconds to run integer math tests, 3.66 seconds to run float math tests.
 - Adafruit MagTag: 17.51 seconds to run integer math tests, 23.13 seconds to run float math tests.
 - Adafruit Clue: 3.41 seconds to run integer math tests, 4.91 seconds to run float math tests.
+- Adafruit Pyportal Titano: 5.93 seconds to run integer math tests, 8.42 seconds to run float math tests.
+
 
 _________________
 
@@ -85,6 +87,7 @@ _________________
 | Adafruit  | QT Py M0 | WORKING |
 | Adafruit  | QtPy esp32-S3 8MB no PSRAM | WORKING |
 | Adafruit  | Itsy Bitsy RP2040 |  WORKING |
+| Adafruit  | Pyportal Titano |  WORKING |
 | Raspberry Pi | Pico | WORKING |
 | UnexpectedMaker | Feather S2 | WORKING |
 | LILYGO | T8 ESP32-S2 w/Display | WORKING |
