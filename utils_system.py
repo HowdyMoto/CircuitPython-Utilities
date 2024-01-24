@@ -2,6 +2,7 @@
 # Inspired by TodBot's circuitpython-tricks: https://github.com/todbot/circuitpython-tricks
 # And by Adafruit/Kattni Rembor's CircuitPython Essentials: https://learn.adafruit.com/circuitpython-essentials/circuitpython-essentials
 # MIT license
+
 """ Helper functions for learning about your boards """
 
 import os
@@ -9,7 +10,6 @@ import gc
 import board
 import microcontroller
 
-CPUTILS_STRING = 'CP UTILS:'
 COLUMN1_WIDTH = 22
 COLUMN_PINNAME_WIDTH = 32
 INDENT1 = 20
@@ -34,18 +34,19 @@ def get_all_info():
     """Print an exhaustive list of details about your board.
     Add custom calls to check_for_pin() if you want to look for something that's not here."""
 
-    print(CPUTILS_STRING, "Getting all board details...")
+    print("Getting all board details...")
 
-    # Anything else you're looking for can easily be added with checK_for_pin()
+    # Anything else you're looking for can easily be added with check_for_pin()
     get_board_id()
     get_cpu_info()
     get_circuitpython_info()
     get_mem_storage_info()
 
-    print("\n\tChecking pins")
+    print("\nChecking pins...")
     get_i2c_info()
     get_uart_info()
     get_spi_info()
+    get_button_pins()
     get_display_info()
     get_status_led_info()
     get_dotstar_info()
@@ -56,9 +57,9 @@ def get_all_info():
     get_microphone_info()
     get_accelgyro_info()
 
-    print_all_pins()
+    get_all_pins()
 
-    #get_builtin_modules()
+    get_builtin_modules()
 
 def get_board_id():
     """Show the board's name.
@@ -79,8 +80,8 @@ def get_cpu_info():
     cpu_type = os.uname().sysname
 
     cpu_frequency_descriptor = "\tCPU 0 frequency:"
-    cpu_frequency_unformatted = microcontroller.cpu.frequency
-    cpu_frequency =  f"{cpu_frequency_unformatted:,}"
+    cpu_frequency_unformatted = microcontroller.cpu.frequency / 1000000
+    cpu_frequency =  f"{cpu_frequency_unformatted:,}" + " MHz"
 
     cpu_temperature_descriptor = "\tCPU 0 temperature:"
     cpu_temperature = microcontroller.cpu.temperature
@@ -134,31 +135,31 @@ def get_display_info():
     if builtin_display:
         display = board.DISPLAY
         print(
-            f"\t\t{"size":<20}",
+            f"\t    {"size":<20}",
             display.width,
             "x",
             display.height
         )
-        print(f"\t\t{"rotation":<20}", display.rotation)
-        print(f"\t\t{"bus":<20}", display.bus)
+        print(f"\t    {"rotation":<20}", display.rotation)
+        print(f"\t    {"bus":<20}", display.bus)
         # Some displays, like epaper, do not have an auto-refresh property
         if hasattr(display, 'auto_refresh'):
             auto_refresh_attribute = display.auto_refresh
         else:
-            auto_refresh_attribute = "None (probably e-paper)"
-        print(f"\t\t{"auto_refresh":<20}", auto_refresh_attribute)
+            auto_refresh_attribute = "None (probably e-ink)"
+        print(f"\t    {"auto_refresh":<20}", auto_refresh_attribute)
         # Some displays, like epaper, do not have a brightness property
         if hasattr(display, 'brightness'):
             brightness_attribute = display.brightness
         else:
-            brightness_attribute = "None (probably e-paper)"
-        print(f"\t\t{"brightness":<20}", brightness_attribute)
+            brightness_attribute = "None (probably e-ink)"
+        print(f"\t    {"brightness":<20}", brightness_attribute)
 
 def get_status_led_info():
     """See if there's a simple status LED on the board.
     Almost always set to board.LED pin"""
 
-    check_for_pin("LED","status LED")
+    check_for_pin("LED","Status LED")
 
 def get_dotstar_info():
     """See if there's a simple status indicator LED on the board.
@@ -204,7 +205,7 @@ def get_i2c_device_addresses():
 
     try:
         i2c = board.STEMMA_I2C()
-        print("\t    I2C pin found at board.STEMMA_I2C")
+        print("\t    Scanning I2C bus at board.STEMMA_I2C")
     except:
         i2c = board.I2C()
         print("\tI2C pin found at board.I2C")
@@ -237,7 +238,7 @@ def get_temperature_info():
     """See if there's a built-in Temperature sensot on the board.
     Almost always set to board.TEMPERATURE pin"""
 
-    check_for_pin("TEMPERATURE","temp sensor")
+    check_for_pin("TEMPERATURE","Temperature sensor")
 
 def get_speakeroutput_info():
     """See if there's a built-in speaker output on the board.
@@ -257,10 +258,10 @@ def get_accelgyro_info():
 
     check_for_pin("ACCELEROMETER_GYRO_INTERRUPT", "LSM9DS1 pin")
 
-def print_all_pins():
+def get_all_pins():
     """List all the board's pin names, one line at a time"""
 
-    print(CPUTILS_STRING, "List all pin names:")
+    print("List all pin names:")
 
     for item in dir(board):
         print("\t",item)
@@ -268,5 +269,18 @@ def print_all_pins():
 def get_builtin_modules():
     """List all this board's built-in CircuitPython modules"""
 
-    print(CPUTILS_STRING, "Built-in modules:")
+    print("Built-in modules:")
     help("modules")
+
+def get_button_pins():
+    """List all the board's built-in buttons"""
+
+    button_count=0
+
+    for item in dir(board):
+        if item.startswith("BUTTON"):
+            button_count += 1
+            check_for_pin(item, "Built-in buttons")
+
+    if (button_count == 0):
+        check_for_pin("BUTTON*", "Built-in button")

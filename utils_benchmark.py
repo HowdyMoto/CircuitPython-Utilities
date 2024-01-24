@@ -7,8 +7,6 @@
 import time
 import random
 
-CPUTILS_STRING = 'CP UTILS:'
-
 # How many iterations to perform. On a microcontroller, performance almost never varies, so brief tests are fine.
 NUM_OPERATIONS = 1000000
 
@@ -20,7 +18,7 @@ def int_math():
     int_random2 = random.randint(0,1000)
     start_time = time.monotonic()
     result = 0
-    
+
     for _ in range(NUM_OPERATIONS):
         result += int_random1
         result -= int_random2
@@ -46,7 +44,7 @@ def float_math():
 
 # Benchmarking
 def run_benchmark():
-    print(CPUTILS_STRING, "Running math benchmark...")
+    print("Running math benchmark...")
 
     time_int = int_math()
     time_float = float_math()
