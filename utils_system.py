@@ -34,7 +34,7 @@ def get_all_info():
     """Print an exhaustive list of details about your board.
     Add custom calls to check_for_pin() if you want to look for something that's not here."""
 
-    print("Getting all board details...")
+    print("\nGetting all board details...")
 
     # Anything else you're looking for can easily be added with check_for_pin()
     get_board_id()
@@ -185,42 +185,48 @@ def get_lightsensor_info():
     check_for_pin("AMB","Ambient light sensor")
 
 def get_i2c_info():
-    """See if there's an STEMMA QT/I2C connector on the board.
-    Of course you can also manually create I2C connections.
-    This does not verify whether you can, or that you have."""
+    """Look for I2C and STEMMA QT I2C pins on the board.
+    STEMMA_I2C pin indicates a solderless connector for connecting devices.
+    On some boards, I2C and STEMMA_I2C are the same pins, which we check for here."""
 
-    stemma_i2c_detected = check_for_pin("STEMMA_I2C", "I2C STEMMA QT")
-    i2c_detected = check_for_pin("I2C", "I2C bus")
+    stemma_i2c_detected = check_for_pin("STEMMA_I2C", "STEMMA QT I2C")
+    i2c_detected = check_for_pin("I2C", "I2C pins")
 
-    if board.I2C() == board.STEMMA_I2C():
-        print("\t    I2C = STEMMA_I2C")
-    else:
-        print("\t    I2C and STEMMA_I2C are separate buses")
+    stemma_i2c_same = False
+
+    if stemma_i2c_detected and i2c_detected:
+        if board.I2C() == board.STEMMA_I2C():
+            print("\t    I2C and STEMMA_I2C are the same bus")
+            stemma_i2c_same = True
+        else:
+            print("\t    I2C and STEMMA_I2C are separate buses")
 
     if stemma_i2c_detected:
-        get_i2c_device_addresses()
-
-def get_i2c_device_addresses():
-    """Scan the I2C bus for devices, and report their addresses in hex."""
-
-    try:
-        i2c = board.STEMMA_I2C()
         print("\t    Scanning I2C bus at board.STEMMA_I2C")
-    except:
-        i2c = board.I2C()
-        print("\tI2C pin found at board.I2C")
+        stemma_i2c = board.STEMMA_I2C()
+        get_i2c_device_addresses(stemma_i2c)
+    if i2c_detected:
+        if (stemma_i2c_same == False):
+            print("\t    Scanning I2C bus at board.I2C")
+            i2c = board.I2C()
+            get_i2c_device_addresses(i2c)
+        else:
+            return
 
-    if not i2c.try_lock():
+def get_i2c_device_addresses(i2c_bus):
+    """Scan the specified I2C bus for devices, and report their addresses in hex."""
+
+    if not i2c_bus.try_lock():
         print("Failed to lock I2C bus for scanning. Trying again...")
         pass
-    i2c_addresses = i2c.scan()
+    i2c_addresses = i2c_bus.scan()
     if len(i2c_addresses) == 0:
         print("\t    No connected I2C devices found")
     else:
         print("\t    I2C device(s) found at:")
         for address in i2c_addresses:
             print("\t\t" + hex(address))
-    i2c.unlock()
+    i2c_bus.unlock()
 
 def get_uart_info():
     """See if there's UART serial output on the board.
@@ -261,7 +267,7 @@ def get_accelgyro_info():
 def get_all_pins():
     """List all the board's pin names, one line at a time"""
 
-    print("List all pin names:")
+    print("\nList all pin names:")
 
     for item in dir(board):
         print("\t",item)
