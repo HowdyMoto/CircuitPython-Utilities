@@ -67,13 +67,14 @@ utils_benchmark.run_benchmark()
 ```
 
 For example, here are some results I've seen:
-- Adafruit Qt Py SAMD21: 28.72 seconds to run integer math tests, 44.33 seconds to run float math tests.
-- Adafruit Qt Py ESP32-S3 No PSRAM: 2.69 seconds to run integer math tests, 3.66 seconds to run float math tests.
-- Adafruit MagTag: 17.51 seconds to run integer math tests, 23.13 seconds to run float math tests.
-- Adafruit Clue: 3.41 seconds to run integer math tests, 4.91 seconds to run float math tests.
-- Adafruit Pyportal Titano: 5.93 seconds to run integer math tests, 8.42 seconds to run float math tests.
-
-
+| Manufacturer  | Board Name | Status |
+| ------------- | ------------- | ------------- |
+| Adafruit  | Qt Py SAMD21 | 28.72s integer, 44.33 float |
+| Adafruit  | Qt Py ESP32-S3 No PSRAM | 2.69s int, 3.66s float |
+| Adafruit  | MagTag  |17.51s int, 23.13s float |
+| Adafruit  | Clue | 3.41s int, 4.91s float |
+| Adafruit  | Pyportal Titan0 | 5.93s int, 8.42s float |
+| Adafruit  | Trinkey RP2040 | 6.14s int, 9.56s float |
 _________________
 
 ## Boards tested
