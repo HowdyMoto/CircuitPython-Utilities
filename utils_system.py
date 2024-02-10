@@ -38,7 +38,6 @@ def get_all_info():
     get_os_info()
     get_board_info()
     get_microcontroller_info()
-    get_mem_storage_info()
 
     print("\nNAMED PINS...\n")
     get_i2c_info()
