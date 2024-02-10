@@ -57,9 +57,6 @@ def get_all_info():
     get_accelgyro_info()
 
     get_all_pins()
-
-    print("\nBUILT-IN MODULES...\n")
-
     get_builtin_modules()
 
 def get_board_id():
@@ -273,14 +270,9 @@ def get_accelgyro_info():
     check_for_pin("ACCELEROMETER_GYRO_INTERRUPT", "IMU interrupt pin")
 
 def get_all_pins():
-    """List all the board's pin names, one line at a time"""
+    """List all the microcontroller's default pin names, and then the board's named pins."""
 
-    print("\nList all pin names from board:\n")
-
-    for item in dir(board):
-        print(item)
-        
-    print("\nList all pin names from microcontroller:\n")
+    print("\nMicrocontroller pins:\n")
     microcontroller_pins = []
     for pin in dir(microcontroller.pin):
         if (isinstance(getattr(microcontroller.pin, pin), microcontroller.Pin) ):
@@ -297,10 +289,15 @@ def get_all_pins():
     for pins in sorted(microcontroller_pins):
         print(pins)
 
+    print("\nBoard pins:\n")
+
+    for item in dir(board):
+        print(item)
+
 def get_builtin_modules():
     """List all this board's built-in CircuitPython modules"""
 
-    print("Built-in modules:")
+    print("\nBuilt-in modules:\n")
     help("modules")
 
 def get_button_pins():
