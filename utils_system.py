@@ -35,10 +35,9 @@ def get_all_info():
 
     print("\nBOARD DETAILS...\n")
 
-    # Anything else you're looking for can easily be added with check_for_pin()
-    get_board_id()
-    get_cpu_info()
-    get_circuitpython_info()
+    get_os_info()
+    get_board_info()
+    get_microcontroller_info()
     get_mem_storage_info()
 
     print("\nNAMED PINS...\n")
@@ -55,53 +54,76 @@ def get_all_info():
     get_speakeroutput_info()
     get_microphone_info()
     get_accelgyro_info()
+    # Anything else specific you're looking for can easily be added with check_for_pin()
+
 
     get_all_pins()
     get_builtin_modules()
 
-def get_board_id():
-    """Show the board's name.
-    There are two names: the one os gives you and the one that board gives you.
-    They're both very similar, they're both reported in case that's useful."""
+def get_os_info():
+    """Show os module info. Includes CircuitPython version and filesystem info."""
+
+    print("\nos module info\n")
 
     boardNameOS = os.uname().machine
-    boardNameOSDescriptor = "Board Name (os):"
-    boardNameBoard = board.board_id
-    boardNameBoardDescriptor = "Board Name (board):"
+    boardNameOSDescriptor = "Board Name:"
     print(f"{boardNameOSDescriptor: <{COLUMN1_WIDTH}} {boardNameOS: <{COLUMN1_WIDTH}}")
+
+    sysname_descriptor = "System name (CPU):"
+    sysname = os.uname().sysname
+    print(f"{sysname_descriptor: <{COLUMN1_WIDTH}} {sysname: <{COLUMN1_WIDTH}}")
+
+    cp_descriptor = "CircuitPython ver:"
+    cp_version = os.uname().release
+    print(f"{cp_descriptor: <{COLUMN1_WIDTH}} {cp_version: <{COLUMN1_WIDTH}}")
+
+    version_descriptor = "Version:"
+    version = os.uname().version
+    print(f"{version_descriptor: <{COLUMN1_WIDTH}} {version: <{COLUMN1_WIDTH}}")
+
+    # os statvfs
+    print("statvfs /")
+    print("\t", os.statvfs("/"))
+
+def get_board_info():
+    """Show all board module info."""
+
+    print("\nboard module info\n")
+
+    boardNameBoard = board.board_id
+    boardNameBoardDescriptor = "Board Name:"
     print(f"{boardNameBoardDescriptor: <{COLUMN1_WIDTH}} {boardNameBoard:<{COLUMN1_WIDTH}}")
 
-def get_cpu_info():
+def get_microcontroller_info():
     """Show microcontroller/CPU details"""
+
+    print("\nmicrocontroller info\n")
 
     cpu_type_descriptor = "CPU:"
     cpu_type = os.uname().sysname
+    print(f"{cpu_type_descriptor: <{COLUMN1_WIDTH}} {cpu_type: <{COLUMN1_WIDTH}}")
+
+    nvm_descriptor = "Non-volatile memory:"
+    nvm_bytes = len(microcontroller.nvm) / 1024
+    nvm_bytes_formatted = str(nvm_bytes) + " KB"
+    print(f"{nvm_descriptor: <{COLUMN1_WIDTH}} {nvm_bytes_formatted: <{COLUMN1_WIDTH}}")
 
     cpu_frequency_descriptor = "CPU 0 frequency:"
     cpu_frequency_unformatted = microcontroller.cpu.frequency / 1000000
     cpu_frequency =  f"{cpu_frequency_unformatted:,}" + " MHz"
+    print(f"{cpu_frequency_descriptor: <{COLUMN1_WIDTH}} {cpu_frequency: <{COLUMN1_WIDTH}}")
 
     cpu_temperature_descriptor = "CPU 0 temperature:"
     cpu_temperature = microcontroller.cpu.temperature
     if cpu_temperature == None:
         cpu_temperature = "Not available"
+    print(f"{cpu_temperature_descriptor: <{COLUMN1_WIDTH}} {cpu_temperature: <{COLUMN1_WIDTH}}")
 
     cpu_voltage_descriptor = "CPU 0 voltage:"
     cpu_voltage = microcontroller.cpu.voltage
     if cpu_voltage == None:
         cpu_voltage = "Not available"
-
-    print(f"{cpu_type_descriptor: <{COLUMN1_WIDTH}} {cpu_type: <{COLUMN1_WIDTH}}")
-    print(f"{cpu_frequency_descriptor: <{COLUMN1_WIDTH}} {cpu_frequency: <{COLUMN1_WIDTH}}")
-    print(f"{cpu_temperature_descriptor: <{COLUMN1_WIDTH}} {cpu_temperature: <{COLUMN1_WIDTH}}")
     print(f"{cpu_voltage_descriptor: <{COLUMN1_WIDTH}} {cpu_voltage: <{COLUMN1_WIDTH}}")
-
-def get_circuitpython_info():
-    """Show CircuitPython version"""
-
-    cp_descriptor = "CircuitPython ver:"
-    cp_version = os.uname().release
-    print(f"{cp_descriptor: <{COLUMN1_WIDTH}} {cp_version: <{COLUMN1_WIDTH}}")
 
 def get_mem_storage_info():
     """Show details about storage and memory"""
@@ -274,22 +296,35 @@ def get_all_pins():
 
     print("\nMicrocontroller pins:\n")
     microcontroller_pins = []
+
+    # microcontroller.pin contains the list of pins directly provided by the CPU
+    # they are typically not labeled with friendly names.
+    # Friendly names are created in board.pins as aliases of these pins
+
+    # get the list provided by microcontroller.pin,
+    # which contains some other things than Pins
     for pin in dir(microcontroller.pin):
-        if (isinstance(getattr(microcontroller.pin, pin), microcontroller.Pin) ):
+        # check each item to see if it's a Pin
+        pin_attr = getattr(microcontroller.pin, pin)
+        if (isinstance(pin_attr, microcontroller.Pin) ):
+            # the list of pin names associated with the Pin
             pins = []
+            # dir(board) has some items that are aliases
+            # look at the list it returns
             for alias in dir(board):
                 if getattr(board, alias) is getattr(microcontroller.pin, pin):
                     pins.append(f"board.{alias}")
             # Add the original GPIO name, in parentheses.
+
+            # Only include pins that are in board.
             if pins:
-                # Only include pins that are in board.
                 pins.append(f"({str(pin)})")
                 microcontroller_pins.append(" ".join(pins))
 
     for pins in sorted(microcontroller_pins):
         print(pins)
 
-    print("\nBoard pins:\n")
+    print("\nBoard pins:", len(dir(board)), "pins detected\n")
 
     for item in dir(board):
         print(item)
