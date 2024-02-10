@@ -56,14 +56,13 @@ def get_all_info():
     get_accelgyro_info()
     # Anything else specific you're looking for can easily be added with check_for_pin()
 
-
-    get_all_pins()
     get_builtin_modules()
 
 def get_os_info():
-    """Show os module info. Includes CircuitPython version and filesystem info."""
+    """Show os module info. Includes CircuitPython version and filesystem info.
+    Show details about storage and memory"""
 
-    print("\nos module info\n")
+    print("\n=== os module info ===\n")
 
     boardNameOS = os.uname().machine
     boardNameOSDescriptor = "Board Name:"
@@ -81,23 +80,48 @@ def get_os_info():
     version = os.uname().version
     print(f"{version_descriptor: <{COLUMN1_WIDTH}} {version: <{COLUMN1_WIDTH}}")
 
-    # os statvfs
+    free_mem_descriptor = "Free memory:"
+
+    fs_stat = os.statvfs('/')
+
+    disk_size_descriptor = "Disk size:"
+    print(f"{disk_size_descriptor:<{COLUMN1_WIDTH}} {(fs_stat[0] * fs_stat[2] / 1024 ):<{COLUMN1_WIDTH}} KB")
+
+    free_space_descriptor = "Disk free space:"
+    print(f"{free_space_descriptor:<{COLUMN1_WIDTH}} {(fs_stat[0] * fs_stat[3] / 1024 ):<{COLUMN1_WIDTH}} KB")
+
+    free_memory = gc.mem_free() / 1024
+    print(f"{free_mem_descriptor:<{COLUMN1_WIDTH}} {free_memory:<{COLUMN1_WIDTH}}", "KB")
+
+    allocated_memory = gc.mem_alloc() / 1024
+    total_memory = allocated_memory + free_memory
+
+    total_mem_descriptor = "Total memory (est):"
+    print(f"{total_mem_descriptor:<{COLUMN1_WIDTH}} {total_memory:<{COLUMN1_WIDTH}}", "KB")
+
+    # statvfs
     print("statvfs /")
     print("\t", os.statvfs("/"))
 
 def get_board_info():
-    """Show all board module info."""
+    """Show all board module info.
+    Mostly shows pin names, and then the board's named pins."""
 
-    print("\nboard module info\n")
+    print("\n=== board module info ===\n")
 
     boardNameBoard = board.board_id
     boardNameBoardDescriptor = "Board Name:"
     print(f"{boardNameBoardDescriptor: <{COLUMN1_WIDTH}} {boardNameBoard:<{COLUMN1_WIDTH}}")
 
+    print("Board pins:")
+
+    for item in dir(board):
+        print("\t" + item)
+
 def get_microcontroller_info():
     """Show microcontroller/CPU details"""
 
-    print("\nmicrocontroller info\n")
+    print("\n=== microcontroller info ===\n")
 
     cpu_type_descriptor = "CPU:"
     cpu_type = os.uname().sysname
@@ -125,24 +149,43 @@ def get_microcontroller_info():
         cpu_voltage = "Not available"
     print(f"{cpu_voltage_descriptor: <{COLUMN1_WIDTH}} {cpu_voltage: <{COLUMN1_WIDTH}}")
 
-def get_mem_storage_info():
-    """Show details about storage and memory"""
+    print("Microcontroller pins:")
+    for pin in dir(microcontroller.pin):
+        print("\t" + pin)
 
-    disk_size_descriptor = "Disk size:"
-    free_space_descriptor = "Disk free space:"
-    total_mem_descriptor = "Total memory (est):"
-    free_mem_descriptor = "Free memory:"
+def get_pin_info():
+    """Show how microprocessor and board pins match up"""
 
-    fs_stat = os.statvfs('/')
-    print(f"{disk_size_descriptor:<{COLUMN1_WIDTH}}{(fs_stat[0] * fs_stat[2] / 1024 ):<{COLUMN1_WIDTH}} KB")
-    print(f"{free_space_descriptor:<{COLUMN1_WIDTH}}{(fs_stat[0] * fs_stat[3] / 1024 ):<{COLUMN1_WIDTH}} KB")
+    print("\n=== pin name info ===\n")
 
-    free_memory = gc.mem_free() / 1024
-    allocated_memory = gc.mem_alloc() / 1024
-    total_memory = allocated_memory + free_memory
+    # microcontroller.pin contains the list of pins directly provided by the CPU
+    # they are typically not labeled with friendly names.
+    # Friendly names are created in board.pins as aliases of these pins
 
-    print(f"{total_mem_descriptor:<{COLUMN1_WIDTH}} {total_memory:<{COLUMN1_WIDTH}}", "KB")
-    print(f"{free_mem_descriptor:<{COLUMN1_WIDTH}} {free_memory:<{COLUMN1_WIDTH}}", "KB")
+    microcontroller_pins = []
+
+    # get the list provided by microcontroller.pin,
+    # which contains some other things than Pins
+    for pin in dir(microcontroller.pin):
+        # check each item to see if it's a Pin
+        pin_attr = getattr(microcontroller.pin, pin)
+        if (isinstance(pin_attr, microcontroller.Pin) ):
+            # the list of pin names associated with the Pin
+            pins = []
+            # dir(board) has some items that are aliases
+            # look at the list it returns
+            for alias in dir(board):
+                if getattr(board, alias) is getattr(microcontroller.pin, pin):
+                    pins.append(f"board.{alias}")
+            # Add the original GPIO name, in parentheses.
+
+            # Only include pins that are in board.
+            if pins:
+                pins.append(f"({str(pin)})")
+                microcontroller_pins.append(" ".join(pins))
+
+    for pins in sorted(microcontroller_pins):
+        print(pins)
 
 # See if the board has a display. If so, show details.
 # Almost always set to board.DISPLAY pin
@@ -150,30 +193,34 @@ def get_display_info():
     """Check for a builtin or onboard display, and show its details.
     Will not show details about a display that you add yourself."""
 
-    builtin_display = check_for_pin("DISPLAY","built-in display")
+    print("\n=== Built-in Display info ===\n")
 
-    if builtin_display:
+    if hasattr(board, "DISPLAY"):
+        print("board.DISPLAY pin found")
+
         display = board.DISPLAY
         print(
-            f"\t{"size":<20}",
+            f"{"size":<20}",
             display.width,
             "x",
             display.height
         )
-        print(f"\t{"rotation":<20}", display.rotation)
-        print(f"\t{"bus":<20}", display.bus)
+        print(f"{"rotation":<20}", display.rotation)
+        print(f"{"bus":<20}", display.bus)
         # Some displays, like epaper, do not have an auto-refresh property
         if hasattr(display, 'auto_refresh'):
             auto_refresh_attribute = display.auto_refresh
         else:
             auto_refresh_attribute = "None (probably e-ink)"
-        print(f"\t{"auto_refresh":<20}", auto_refresh_attribute)
+        print(f"{"auto_refresh":<20}", auto_refresh_attribute)
         # Some displays, like epaper, do not have a brightness property
         if hasattr(display, 'brightness'):
             brightness_attribute = display.brightness
         else:
             brightness_attribute = "None (probably e-ink)"
-        print(f"\t{"brightness":<20}", brightness_attribute)
+        print(f"{"brightness":<20}", brightness_attribute)
+    else:
+        print("board.DISPLAY pin not found")
 
 def get_status_led_info():
     """See if there's a simple status LED on the board.
@@ -290,44 +337,6 @@ def get_accelgyro_info():
     Almost always set to board.ACCELEROMETER_GYRO_INTERRUPT"""
 
     check_for_pin("ACCELEROMETER_GYRO_INTERRUPT", "IMU interrupt pin")
-
-def get_all_pins():
-    """List all the microcontroller's default pin names, and then the board's named pins."""
-
-    print("\nMicrocontroller pins:\n")
-    microcontroller_pins = []
-
-    # microcontroller.pin contains the list of pins directly provided by the CPU
-    # they are typically not labeled with friendly names.
-    # Friendly names are created in board.pins as aliases of these pins
-
-    # get the list provided by microcontroller.pin,
-    # which contains some other things than Pins
-    for pin in dir(microcontroller.pin):
-        # check each item to see if it's a Pin
-        pin_attr = getattr(microcontroller.pin, pin)
-        if (isinstance(pin_attr, microcontroller.Pin) ):
-            # the list of pin names associated with the Pin
-            pins = []
-            # dir(board) has some items that are aliases
-            # look at the list it returns
-            for alias in dir(board):
-                if getattr(board, alias) is getattr(microcontroller.pin, pin):
-                    pins.append(f"board.{alias}")
-            # Add the original GPIO name, in parentheses.
-
-            # Only include pins that are in board.
-            if pins:
-                pins.append(f"({str(pin)})")
-                microcontroller_pins.append(" ".join(pins))
-
-    for pins in sorted(microcontroller_pins):
-        print(pins)
-
-    print("\nBoard pins:", len(dir(board)), "pins detected\n")
-
-    for item in dir(board):
-        print(item)
 
 def get_builtin_modules():
     """List all this board's built-in CircuitPython modules"""
