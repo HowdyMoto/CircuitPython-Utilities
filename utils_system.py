@@ -30,8 +30,7 @@ def check_for_pin(pin, descriptor):
     return pin_detected
 
 def get_all_info():
-    """Print an exhaustive list of details about your board.
-    Add custom calls to check_for_pin() if you want to look for something that's not here."""
+    """Print an exhaustive list of details about your board."""
 
     print("\nBOARD DETAILS...\n")
 
@@ -39,21 +38,9 @@ def get_all_info():
     get_board_info()
     get_microcontroller_info()
 
-    print("\nNAMED PINS...\n")
     get_i2c_info()
     get_uart_info()
     get_spi_info()
-    get_button_pins()
-    get_display_info()
-    get_status_led_info()
-    get_dotstar_info()
-    get_neopixel_info()
-    get_lightsensor_info()
-    get_temperature_info()
-    get_speakeroutput_info()
-    get_microphone_info()
-    get_accelgyro_info()
-    # Anything else specific you're looking for can easily be added with check_for_pin()
 
     get_builtin_modules()
 
@@ -102,6 +89,7 @@ def get_os_info():
     print("statvfs /")
     print("\t", os.statvfs("/"))
 
+
 def get_board_info():
     """Show all board module info.
     Mostly shows pin names, and then the board's named pins."""
@@ -115,7 +103,88 @@ def get_board_info():
     print("Board pins:")
 
     for item in dir(board):
-        print("\t" + item)
+
+    # Look in the board's CicrcuitPython source code mpconfigboard.h for the board to see which pins are used for board.I2C()
+
+        # LED related pins
+        if item == "LED":
+            descriptor = "Built-in Neopixel"
+        elif item == "NEOPIXEL":
+            descriptor = "Built-in Neopixel"
+        elif item == "APA102_SCK":
+            descriptor = "Built-in DotStar LED Serial Clock"
+        elif item == "APA102_MOSI":
+            descriptor = "Built-in DotStar LED Master Out Slave In"
+        elif item == "DISPLAY":
+            descriptor = "Built-in display"
+
+        # I2C related pins
+        elif item == "I2C":
+            descriptor = "I2C Bus"
+        elif item == "STEMMA_I2C":
+            descriptor = "Stemma I2C Connector"
+        elif item == "SCL":
+            descriptor = "I2C Serial Clock Line"
+        elif item == "SDA":
+            descriptor = "I2C Serial Data Line"
+        elif item == "SCK":
+            descriptor = "I2C Serial Clock"
+
+        # SPI related pins
+        elif item == "SPI":
+            descriptor = "SPI Bus"
+        elif item == "MOSI":
+            descriptor == "SPI Master Out Slave In"
+        elif item == "MISO":
+            descriptor = "SPI Master In Slave Out"
+        elif item == "SS":
+            descriptor = "SPI Slave Select"
+        elif item == "CS":
+            descriptor = "SPI Slave Select (alt name)"
+
+        # UART
+        elif item.startswith("UART"):
+            descriptor = "UART"
+        elif item == "RX":
+            descriptor = "UART receive pin"
+        elif item == "TX":
+            descriptor = "UART transmit pin"
+
+        # Buttons
+        elif item.startswith("BUTTON"):
+            descriptor = "Built-in button"
+        elif item == "SLIDE_SWITCH":
+            descriptor = "Built-in switch"
+        elif item == "POWER_SWITCH":
+            descriptor = "Built-in power switch"
+
+        # A built-in display
+        elif item == "DISPLAY":
+            descriptor = "Built-in display"
+
+
+        # Audio in and out
+        elif item == "SPEAKER":
+            descriptor = "Speaker output"
+        elif item == "AUDIO_OUT":
+            descriptor = "Speaker output"
+        elif item == "SPEAKER_ENABLE":
+            descriptor = "Speaker enabler pin"
+        elif item == "MICROPHONE_DATA":
+            descriptor = "Microphone PDM data"
+        elif item == "MICROPHONE_CLOCK":
+            descriptor = "Microphone PDM clock"
+
+        # Other misc sensors
+        elif item == "LIGHT":
+            descriptor = "Light sensor"
+        elif item == "TEMPERATURE":
+            descriptor = "Temperature sensor"
+
+        else:
+            descriptor = ""
+        print(f"\t{item: <{COLUMN1_WIDTH}} {descriptor:<{COLUMN1_WIDTH}}")
+
 
 def get_microcontroller_info():
     """Show microcontroller/CPU details"""
@@ -152,6 +221,7 @@ def get_microcontroller_info():
     for pin in dir(microcontroller.pin):
         print("\t" + pin)
 
+
 def get_pin_info():
     """Show how microprocessor and board pins match up"""
 
@@ -185,6 +255,7 @@ def get_pin_info():
 
     for pins in sorted(microcontroller_pins):
         print(pins)
+
 
 # See if the board has a display. If so, show details.
 # Almost always set to board.DISPLAY pin
@@ -221,65 +292,58 @@ def get_display_info():
     else:
         print("board.DISPLAY pin not found")
 
-def get_status_led_info():
-    """See if there's a simple status LED on the board.
-    Almost always set to board.LED pin"""
-
-    check_for_pin("LED","Status LED")
-
-def get_dotstar_info():
-    """See if there's a simple status indicator LED on the board.
-    This is typically a requirement for CircuitPython boards,
-    but there may be some out there that don't have one.
-    Almost always set to board.LED pin"""
-
-    check_for_pin("APA102_SCK","DotStar LED")
-
-def get_neopixel_info():
-    """See if there's a Neopixel LED on the board.
-    Almost always set to board.NEOPIXEL pin"""
-
-    check_for_pin("NEOPIXEL","Neopixel LED")
-    NEOPIXEL_PIN = 'NEOPIXEL'
-
-def get_lightsensor_info():
-    """See if there's a DotStar LED on the board.
-    Almost always set to board.LIGHT pin,
-    though I've seen some called AMB (like Unexpected Maker S2)"""
-
-    check_for_pin("LIGHT","Ambient light sensor")
-    check_for_pin("AMB","Ambient light sensor")
 
 def get_i2c_info():
     """Look for I2C and STEMMA QT I2C pins on the board.
     STEMMA_I2C pin often indicates a solderless connector for connecting devices, but not always.
     On some boards, I2C and STEMMA_I2C are the same pins, which we check for here."""
 
-    stemma_i2c_detected = check_for_pin("STEMMA_I2C", "STEMMA QT I2C")
-    i2c_detected = check_for_pin("I2C", "I2C pin")
-    check_for_pin("SDA", "I2C Serial Data Line pin")
-    check_for_pin("SCL", "I2C Serial Clock Line")
+    print("\n=== i2c info ===\n")
+    print("i2c pins found:")
 
+    i2c_pin_found = False
+    stemma_i2c_pin_found = False
     stemma_i2c_same = False
 
-    if stemma_i2c_detected and i2c_detected:
+
+    for item in dir(board):
+        if item == "SCL":
+            descriptor = "I2C Serial Clock Line"
+        elif item == "SDA":
+            descriptor = "I2C Serial Data Line"
+        elif item == "SCK":
+            descriptor = "I2C Serial Clock"
+        elif item == "I2C":
+            descriptor = "I2C Bus"
+            i2c_pin_found = True
+        elif item == "STEMMA_I2C":
+            descriptor = "Stemma I2C Connector"
+            stemma_i2c_pin_found = True
+        else:
+            descriptor = ""
+        if descriptor != "":
+            print(f"\t{item: <{COLUMN1_WIDTH}} {descriptor:<{COLUMN1_WIDTH}}")
+
+
+    if i2c_pin_found and stemma_i2c_pin_found:
         if board.I2C() == board.STEMMA_I2C():
-            print("\tI2C and STEMMA_I2C are the same bus")
+            print("\n\tI2C and STEMMA_I2C are the same bus")
             stemma_i2c_same = True
         else:
             print("\tI2C and STEMMA_I2C are separate buses")
 
-    if stemma_i2c_detected:
-        print("\tScanning I2C bus at board.STEMMA_I2C")
-        stemma_i2c = board.STEMMA_I2C()
-        get_i2c_device_addresses(stemma_i2c)
-    if i2c_detected:
-        if (stemma_i2c_same == False):
-            print("\tScanning I2C bus at board.I2C")
+    if i2c_pin_found:
+            print("\nScanning I2C bus at board.I2C")
             i2c = board.I2C()
             get_i2c_device_addresses(i2c)
-        else:
-            return
+    if stemma_i2c_pin_found:
+        if (stemma_i2c_same == False):
+            print("\nScanning I2C bus at board.STEMMA_I2C")
+            stemma_i2c = board.STEMMA_I2C()
+            get_i2c_device_addresses(stemma_i2c)
+
+    else:
+        print("No I2C or STEMMA_I2C pin found")
 
 def get_i2c_device_addresses(i2c_bus):
     """Scan the specified I2C bus for devices, and report their addresses in hex."""
@@ -296,11 +360,6 @@ def get_i2c_device_addresses(i2c_bus):
             print("\t\t" + hex(address))
     i2c_bus.unlock()
 
-def get_uart_info():
-    """See if there's UART serial output on the board.
-    Almost always set to board.UART"""
-
-    check_for_pin("UART", "UART pin")
 
 def get_spi_info():
     """See if there's SPI output on the board.
@@ -313,29 +372,6 @@ def get_spi_info():
     check_for_pin("SS", "SPI Slave Select")
     check_for_pin("CS", "SPI Slave Select (alt name)")
 
-def get_temperature_info():
-    """See if there's a built-in Temperature sensot on the board.
-    Almost always set to board.TEMPERATURE pin"""
-
-    check_for_pin("TEMPERATURE","Temperature sensor")
-
-def get_speakeroutput_info():
-    """See if there's a built-in speaker output on the board.
-    Almost always set to board.SPEAKER pin"""
-
-    check_for_pin("SPEAKER", "Analog speaker output")
-
-def get_microphone_info():
-    """See if there's a built-in microphone on the board.
-    Almost always set to board.MICROPHONE_CLOCK and MICROPHONE_DATA, which come in pairs."""
-
-    check_for_pin("MICROPHONE_CLOCK", "Microphone")
-
-def get_accelgyro_info():
-    """See if there's a built-in IMU (accelerometer/magnetometer/gyroscope) interrupt on the board.
-    Almost always set to board.ACCELEROMETER_GYRO_INTERRUPT"""
-
-    check_for_pin("ACCELEROMETER_GYRO_INTERRUPT", "IMU interrupt pin")
 
 def get_builtin_modules():
     """List all this board's built-in CircuitPython modules"""
