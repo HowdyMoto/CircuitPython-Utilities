@@ -123,11 +123,11 @@ def get_board_info():
             descriptor = "I2C Bus"
         elif item == "STEMMA_I2C":
             descriptor = "Stemma I2C Connector"
-        elif item == "SCL":
+        elif item.startswith("SCL"):
             descriptor = "I2C Serial Clock Line"
-        elif item == "SDA":
+        elif item.startswith("SDA"):
             descriptor = "I2C Serial Data Line"
-        elif item == "SCK":
+        elif item.startswith("SCK"):
             descriptor = "I2C Serial Clock"
 
         # SPI related pins
