@@ -122,8 +122,6 @@ def get_board_info():
             descriptor = "Built-in DotStar LED Serial Clock"
         elif item == "DOTSTAR_DATA":
             descriptor = "Built-in DotStar color data pin"
-        elif (board.APA102_SCK == board.DOTSTAR_CLOCK):
-            print("APA102_SCK = DOTSTAR_CLOCK")
 
         # I2C related pins
         elif item == "I2C":
@@ -183,6 +181,8 @@ def get_board_info():
 
         # Other misc sensors
         elif item == "LIGHT":
+            descriptor = "Light sensor"
+        elif item == "L":
             descriptor = "Light sensor"
         elif item == "TEMPERATURE":
             descriptor = "Temperature sensor"
