@@ -141,7 +141,7 @@ def get_board_info():
         elif item == "SPI":
             descriptor = "SPI Bus"
         elif item == "MOSI":
-            descriptor == "SPI Master Out Slave In"
+            descriptor = "SPI Master Out Slave In"
         elif item == "MISO":
             descriptor = "SPI Master In Slave Out"
         elif item == "SS":
