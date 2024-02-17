@@ -158,10 +158,9 @@ def get_board_info():
         elif item == "POWER_SWITCH":
             descriptor = "Built-in power switch"
 
-        # A built-in display
+        # Built-in display
         elif item == "DISPLAY":
             descriptor = "Built-in display"
-
 
         # Audio in and out
         elif item == "SPEAKER":
@@ -180,6 +179,15 @@ def get_board_info():
             descriptor = "Light sensor"
         elif item == "TEMPERATURE":
             descriptor = "Temperature sensor"
+
+        # Other pins
+        elif item == "VOLTAGE_MONITOR":
+            descriptor = "Supply voltage monitoring pin"
+        elif item == "VBUS_SENSE":
+            descriptor = "USB VBUS power detection pin"
+        elif item == "SMPS_MODE":
+            descriptor = "Switched-Mode Power Supply control pin"
+
 
         else:
             descriptor = ""
