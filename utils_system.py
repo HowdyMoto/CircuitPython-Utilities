@@ -99,10 +99,12 @@ def get_board_info():
     boardNameBoard = board.board_id
     boardNameBoardDescriptor = "Board Name:"
     print(f"{boardNameBoardDescriptor: <{COLUMN1_WIDTH}} {boardNameBoard:<{COLUMN1_WIDTH}}")
-
     print("Board pins:")
 
-    for item in dir(board):
+    pins = dir(board)
+    pins.sort()
+
+    for item in pins:
 
     # Look in the board's CicrcuitPython source code mpconfigboard.h for the board to see which pins are used for board.I2C()
 
