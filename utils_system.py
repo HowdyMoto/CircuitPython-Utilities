@@ -5,13 +5,7 @@
 
 """ Helper functions for learning about your boards """
 
-import os
-import gc
-import board
-import microcontroller
-
 COLUMN1_WIDTH = 22
-COLUMN_PINNAME_WIDTH = 32
 
 # A function to check for a pin
 # First param is the pin name
@@ -22,11 +16,13 @@ def check_for_pin(pin, descriptor):
     If you're using a board not made by Adafruit, you can use this function to search for non-standard pin names.
     You can 'import board' and then dir(board) to see what pins your board has."""
 
+    import board
+
     if hasattr(board, pin):
         pin_detected = True
     else:
         pin_detected = False
-    print(f"{pin:<{COLUMN_PINNAME_WIDTH}}{descriptor:<{COLUMN_PINNAME_WIDTH}}\t{pin_detected}")
+    print(pin, descriptor, "detected" )
     return pin_detected
 
 def get_all_info():
@@ -49,6 +45,9 @@ def get_os_info():
     Show details about storage and memory"""
 
     print("\n=== os module info ===\n")
+
+    import os
+    import gc
 
     boardNameOS = os.uname().machine
     boardNameOSDescriptor = "Board Name:"
@@ -96,6 +95,8 @@ def get_board_info():
 
     print("\n=== board module info ===\n")
 
+    import board
+
     boardNameBoard = board.board_id
     boardNameBoardDescriptor = "Board Name:"
     print(f"{boardNameBoardDescriptor: <{COLUMN1_WIDTH}} {boardNameBoard:<{COLUMN1_WIDTH}}")
@@ -117,8 +118,12 @@ def get_board_info():
             descriptor = "Built-in DotStar LED Serial Clock"
         elif item == "APA102_MOSI":
             descriptor = "Built-in DotStar LED Master Out Slave In"
-        elif item == "DISPLAY":
-            descriptor = "Built-in display"
+        elif item == "DOTSTAR_CLOCK":
+            descriptor = "Built-in DotStar LED Serial Clock"
+        elif item == "DOTSTAR_DATA":
+            descriptor = "Built-in DotStar color data pin"
+        elif (board.APA102_SCK == board.DOTSTAR_CLOCK):
+            print("APA102_SCK = DOTSTAR_CLOCK")
 
         # I2C related pins
         elif item == "I2C":
@@ -201,6 +206,9 @@ def get_microcontroller_info():
 
     print("\n=== microcontroller info ===\n")
 
+    import os
+    import microcontroller
+
     cpu_type_descriptor = "CPU:"
     cpu_type = os.uname().sysname
     print(f"{cpu_type_descriptor: <{COLUMN1_WIDTH}} {cpu_type: <{COLUMN1_WIDTH}}")
@@ -236,6 +244,9 @@ def get_pin_info():
     """Show how microprocessor and board pins match up"""
 
     print("\n=== pin name info ===\n")
+
+    import board
+    import microcontroller
 
     # microcontroller.pin contains the list of pins directly provided by the CPU
     # they are typically not labeled with friendly names.
