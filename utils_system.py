@@ -166,6 +166,7 @@ def get_board_info():
         # Built-in display
         elif item == "DISPLAY":
             descriptor = "Built-in display"
+        # TFT display pins
         elif item == "TFT_BACKLIGHT":
             descriptor = "TFT display backlight control"
         elif item == "TFT_CS":
@@ -178,6 +179,21 @@ def get_board_info():
             descriptor = "TFT display reset"
         elif item == "TFT_SCK":
             descriptor = "TFT display SPI serial clock"
+        # E-ink display
+        elif item == "EPD_BUSY":
+            descriptor = "E-ink display busy signal"
+        elif item == "EPD_CS":
+            descriptor = "E-ink display chip select for SPI bus"
+        elif item == "EPD_DC":
+            descriptor = "E-ink display data/command select"
+        elif item == "EPD_MISO":
+            descriptor = "E-ink display SPI Master In Slave Out"
+        elif item == "EPD_MOSI":
+            descriptor = "E-ink display SPI Master Out Slave In"
+        elif item == "EPD_RESET":
+            descriptor = "E-ink display display reset"
+        elif item == "EPD_SCK":
+            descriptor = "E-ink display display SPI serial clock"
 
         # Audio in and out
         elif item == "SPEAKER":
@@ -202,11 +218,14 @@ def get_board_info():
         # Other pins
         elif item == "VOLTAGE_MONITOR":
             descriptor = "Supply voltage monitor"
+        elif item == "BATTERY":
+            descriptor = "Battery voltage monitor"
         elif item == "VBUS_SENSE":
             descriptor = "USB VBUS power detection"
         elif item == "SMPS_MODE":
             descriptor = "Switched-Mode Power Supply control"
-
+        elif item == "BOOT0":
+            descriptor = "Bootloader select pin"
 
         else:
             descriptor = ""
