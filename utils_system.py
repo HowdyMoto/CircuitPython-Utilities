@@ -121,7 +121,7 @@ def get_board_info():
         elif item == "DOTSTAR_CLOCK":
             descriptor = "Built-in DotStar LED Serial Clock"
         elif item == "DOTSTAR_DATA":
-            descriptor = "Built-in DotStar color data pin"
+            descriptor = "Built-in DotStar color data"
 
         # I2C related pins
         elif item == "I2C":
@@ -151,9 +151,9 @@ def get_board_info():
         elif item.startswith("UART"):
             descriptor = "UART"
         elif item == "RX":
-            descriptor = "UART receive pin"
+            descriptor = "UART receive"
         elif item == "TX":
-            descriptor = "UART transmit pin"
+            descriptor = "UART transmit"
 
         # Buttons
         elif item.startswith("BUTTON"):
@@ -166,6 +166,18 @@ def get_board_info():
         # Built-in display
         elif item == "DISPLAY":
             descriptor = "Built-in display"
+        elif item == "TFT_BACKLIGHT":
+            descriptor = "TFT display backlight control"
+        elif item == "TFT_CS":
+            descriptor = "TFT display chip select for SPI bus"
+        elif item == "TFT_DC":
+            descriptor = "TFT display data/command select"
+        elif item == "TFT_MOSI":
+            descriptor = "TFT display SPI Master Out Slave In"
+        elif item == "TFT_RESET":
+            descriptor = "TFT display reset"
+        elif item == "TFT_SCK":
+            descriptor = "TFT display SPI serial clock"
 
         # Audio in and out
         elif item == "SPEAKER":
@@ -173,7 +185,7 @@ def get_board_info():
         elif item == "AUDIO_OUT":
             descriptor = "Speaker output"
         elif item == "SPEAKER_ENABLE":
-            descriptor = "Speaker enabler pin"
+            descriptor = "Speaker enable"
         elif item == "MICROPHONE_DATA":
             descriptor = "Microphone PDM data"
         elif item == "MICROPHONE_CLOCK":
@@ -189,11 +201,11 @@ def get_board_info():
 
         # Other pins
         elif item == "VOLTAGE_MONITOR":
-            descriptor = "Supply voltage monitoring pin"
+            descriptor = "Supply voltage monitor"
         elif item == "VBUS_SENSE":
-            descriptor = "USB VBUS power detection pin"
+            descriptor = "USB VBUS power detection"
         elif item == "SMPS_MODE":
-            descriptor = "Switched-Mode Power Supply control pin"
+            descriptor = "Switched-Mode Power Supply control"
 
 
         else:
