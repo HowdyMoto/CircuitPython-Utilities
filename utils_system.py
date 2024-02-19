@@ -51,42 +51,28 @@ def get_os_info():
 
     boardNameOS = os.uname().machine
     boardNameOSDescriptor = "Board Name:"
-    print(f"{boardNameOSDescriptor: <{COLUMN1_WIDTH}} {boardNameOS: <{COLUMN1_WIDTH}}")
+    print("Board name:\t", boardNameOS)
 
-    sysname_descriptor = "System name (CPU):"
-    sysname = os.uname().sysname
-    print(f"{sysname_descriptor: <{COLUMN1_WIDTH}} {sysname: <{COLUMN1_WIDTH}}")
 
-    cp_descriptor = "CircuitPython ver:"
-    cp_version = os.uname().release
-    print(f"{cp_descriptor: <{COLUMN1_WIDTH}} {cp_version: <{COLUMN1_WIDTH}}")
-
-    version_descriptor = "Version:"
-    version = os.uname().version
-    print(f"{version_descriptor: <{COLUMN1_WIDTH}} {version: <{COLUMN1_WIDTH}}")
-
-    free_mem_descriptor = "Free memory:"
-
-    fs_stat = os.statvfs('/')
-
-    disk_size_descriptor = "Disk size:"
-    print(f"{disk_size_descriptor:<{COLUMN1_WIDTH}} {(fs_stat[0] * fs_stat[2] / 1024 ):<{COLUMN1_WIDTH}} KB")
-
-    free_space_descriptor = "Disk free space:"
-    print(f"{free_space_descriptor:<{COLUMN1_WIDTH}} {(fs_stat[0] * fs_stat[3] / 1024 ):<{COLUMN1_WIDTH}} KB")
+    print("System name (CPU):\t", os.uname().sysname)
+    print("CircuitPython ver:\t", os.uname().release)
+    print("Version:\t\t", os.uname().version)
 
     free_memory = gc.mem_free() / 1024
-    print(f"{free_mem_descriptor:<{COLUMN1_WIDTH}} {free_memory:<{COLUMN1_WIDTH}}", "KB")
-
     allocated_memory = gc.mem_alloc() / 1024
     total_memory = allocated_memory + free_memory
 
-    total_mem_descriptor = "Total memory (est):"
-    print(f"{total_mem_descriptor:<{COLUMN1_WIDTH}} {total_memory:<{COLUMN1_WIDTH}}", "KB")
+    print("Free memory:\t", free_memory, "KB")
+    print("Total memory:\t", total_memory, "KB")
+
+    fs_stat = os.statvfs('/')
+
+    print("Disk size:\t", fs_stat[0] * fs_stat[2] / 1024, "KB")
+    print("Disk free space:\t", fs_stat[0] * fs_stat[3] / 1024, "KB")
 
     # statvfs
     print("statvfs /")
-    print("\t", os.statvfs("/"))
+    print("\t", fs_stat)
 
 
 def get_board_info():
@@ -109,8 +95,15 @@ def get_board_info():
 
     # Look in the board's CicrcuitPython source code mpconfigboard.h for the board to see which pins are used for board.I2C()
 
+        # Generic analog and digital pins
+        if len(item) >= 2 and item[0] == "A" and item[1].isdigit():
+            descriptor = "Generic analog pin"
+        elif len(item) >= 2 and item[0] == "D" and item[1].isdigit():
+            descriptor = "Generic digital pin"
+
+
         # LED related pins
-        if item == "LED":
+        elif item == "LED":
             descriptor = "Built-in Neopixel"
         elif item == "NEOPIXEL":
             descriptor = "Built-in Neopixel"
@@ -171,14 +164,27 @@ def get_board_info():
             descriptor = "TFT display backlight control"
         elif item == "TFT_CS":
             descriptor = "TFT display chip select for SPI bus"
+        elif item == "TFT_RS":
+            descriptor = "TFT register or display data/command select"
         elif item == "TFT_DC":
-            descriptor = "TFT display data/command select"
+            descriptor = "TFT register or display data/command select"
         elif item == "TFT_MOSI":
             descriptor = "TFT display SPI Master Out Slave In"
         elif item == "TFT_RESET":
             descriptor = "TFT display reset"
         elif item == "TFT_SCK":
             descriptor = "TFT display SPI serial clock"
+        elif item == "TFT_TE":
+            descriptor = "TFT tearing effect/prevention"
+        elif item == "TFT_WR":
+            descriptor = "TFT display write"
+        elif item == "TFT_RD":
+            descriptor = "TFT display read"
+
+        # LCD pins
+        elif item.startswith("LCD_DATA"):
+            descriptor = "LCD data"
+
         # E-ink display
         elif item == "EPD_BUSY":
             descriptor = "E-ink display busy signal"
@@ -194,6 +200,16 @@ def get_board_info():
             descriptor = "E-ink display display reset"
         elif item == "EPD_SCK":
             descriptor = "E-ink display display SPI serial clock"
+
+        # Touchscreen pins
+        elif item == "TOUCH_XL":
+            descriptor = "Touchscreen X left"
+        elif item == "TOUCH_XR":
+            descriptor = "Touchscreen X right"
+        elif item == "TOUCH_YD":
+            descriptor = "Touchscreen Y down"
+        elif item == "TOUCH_YU":
+            descriptor = "Touchscreen Y up"
 
         # Audio in and out
         elif item == "SPEAKER":
@@ -211,9 +227,26 @@ def get_board_info():
         elif item == "LIGHT":
             descriptor = "Light sensor"
         elif item == "L":
-            descriptor = "Light sensor"
+            descriptor = "Light sensor TEST"
         elif item == "TEMPERATURE":
             descriptor = "Temperature sensor"
+
+        # ESP32 co-processor pins
+        elif item == "ESP_BUSY":
+            descriptor = "ESP32 co-processor busy status"
+        elif item == "ESP_CS":
+            descriptor = "ESP32 co-processor SPI chip select"
+        elif item == "ESP_RESET":
+            descriptor = "ESP32 co-processor reset"
+        elif item == "ESP_RTS":
+            descriptor = "ESP32 co-processor request-to-send for UART"
+        elif item == "ESP_TX":
+            descriptor = "ESP32 co-processor transmit to MCU"
+        elif item == "ESP_RX":
+            descriptor = "ESP32 co-processor receive from MCU"
+        elif item == "ESP_GPIO0":
+            descriptor = "ESP32 boot select"
+
 
         # Other pins
         elif item == "VOLTAGE_MONITOR":
@@ -225,7 +258,34 @@ def get_board_info():
         elif item == "SMPS_MODE":
             descriptor = "Switched-Mode Power Supply control"
         elif item == "BOOT0":
-            descriptor = "Bootloader select pin"
+            descriptor = "Bootloader select"
+
+        # SD card
+        elif item == "SD_CS":
+            descriptor = "SD card SPI CS"
+        elif item == "SD_CARD_DETECT":
+            descriptor = "SD card detection"
+
+        # Camera
+        elif item == "CAMERA_VSYNC":
+            descriptor = "Camera vertical sync signal"
+        elif item == "CAMERA_HSYNC":
+            descriptor = "Camera horizontal sync signal"
+
+        elif item == "CAMERA_HREF":
+            descriptor = "Camera horizontal reference"
+        elif item == "CAMERA_XCLK":
+            descriptor = "Camera external clock"
+        elif item == "CAMERA_PCLK":
+            descriptor = "Camera pixel clock"
+        elif item == "CAMERA_PWDN":
+            descriptor = "Camera power down"
+        elif item == "CAMERA_DATA2":
+            descriptor = "Camera horizontal sync signal"
+        elif item == "CAMERA_RESET":
+            descriptor="Camera reset"
+        elif item.startswith("CAMERA_DATA"):
+            descriptor = "Camera data"
 
         else:
             descriptor = ""
@@ -242,29 +302,25 @@ def get_microcontroller_info():
 
     cpu_type_descriptor = "CPU:"
     cpu_type = os.uname().sysname
-    print(f"{cpu_type_descriptor: <{COLUMN1_WIDTH}} {cpu_type: <{COLUMN1_WIDTH}}")
+    print("CPU:\t\t", cpu_type)
 
-    nvm_descriptor = "Non-volatile memory:"
     nvm_bytes = len(microcontroller.nvm) / 1024
     nvm_bytes_formatted = str(nvm_bytes) + " KB"
-    print(f"{nvm_descriptor: <{COLUMN1_WIDTH}} {nvm_bytes_formatted: <{COLUMN1_WIDTH}}")
+    print("NVM:\t\t", nvm_bytes_formatted)
 
-    cpu_frequency_descriptor = "CPU 0 frequency:"
     cpu_frequency_unformatted = microcontroller.cpu.frequency / 1000000
     cpu_frequency =  f"{cpu_frequency_unformatted:,}" + " MHz"
-    print(f"{cpu_frequency_descriptor: <{COLUMN1_WIDTH}} {cpu_frequency: <{COLUMN1_WIDTH}}")
+    print("CPU 0 frequency:\t", cpu_frequency)
 
-    cpu_temperature_descriptor = "CPU 0 temperature:"
     cpu_temperature = microcontroller.cpu.temperature
     if cpu_temperature == None:
         cpu_temperature = "Not available"
-    print(f"{cpu_temperature_descriptor: <{COLUMN1_WIDTH}} {cpu_temperature: <{COLUMN1_WIDTH}}")
+    print("CPU 0 temperature:\t", cpu_temperature)
 
-    cpu_voltage_descriptor = "CPU 0 voltage:"
     cpu_voltage = microcontroller.cpu.voltage
     if cpu_voltage == None:
         cpu_voltage = "Not available"
-    print(f"{cpu_voltage_descriptor: <{COLUMN1_WIDTH}} {cpu_voltage: <{COLUMN1_WIDTH}}")
+    print("CPU 0 voltage:\t", cpu_voltage)
 
     print("Microcontroller pins:")
     for pin in dir(microcontroller.pin):
@@ -315,6 +371,8 @@ def get_display_info():
     """Check for a builtin or onboard display, and show its details.
     Will not show details about a display that you add yourself."""
 
+    import board
+
     print("\n=== Built-in Display info ===\n")
 
     if hasattr(board, "DISPLAY"):
@@ -350,13 +408,14 @@ def get_i2c_info():
     STEMMA_I2C pin often indicates a solderless connector for connecting devices, but not always.
     On some boards, I2C and STEMMA_I2C are the same pins, which we check for here."""
 
+    import board
+
     print("\n=== i2c info ===\n")
     print("i2c pins found:")
 
     i2c_pin_found = False
     stemma_i2c_pin_found = False
     stemma_i2c_same = False
-
 
     for item in dir(board):
         if item == "SCL":
