@@ -9,27 +9,11 @@ import board
 
 COLUMN1_WIDTH = 22
 
-# A function to check for a pin
-# First param is the pin name
-# Second param is a descriptor of the pin, which is shown in the REPL when it checks for the pin.
-# If you're using a board not made by Adafruit, you can use this function to search for non-standard pin names.
-def check_for_pin(pin, descriptor):
-    """Check for a pin on the board.
-    If you're using a board not made by Adafruit, you can use this function to search for non-standard pin names.
-    You can 'import board' and then dir(board) to see what pins your board has."""
-
-    if hasattr(board, pin):
-        pin_detected = True
-    else:
-        pin_detected = False
-    print(pin,  pin_detected)
-    return pin_detected
-
 def get_board_pins():
     """Show all board module info.
     Mostly shows pin names, and then the board's named pins."""
 
-    print("\n=== board module info ===\n")
+    print("\n=== board pins detail ===\n")
 
     boardNameBoard = board.board_id
     boardNameBoardDescriptor = "Board Name:"
@@ -244,14 +228,13 @@ def get_microcontroller_pins():
 
     print("\n=== microcontroller pins ===\n")
 
-    import os
     import microcontroller
 
     print("Microcontroller pins:")
     for pin in dir(microcontroller.pin):
         print("\t" + pin)
 
-def get_pin_info():
+def get_matching_pins():
     """Show how microprocessor and board pins match up"""
 
     print("\n=== pin name info ===\n")
@@ -287,16 +270,18 @@ def get_pin_info():
     for pins in sorted(microcontroller_pins):
         print(pins)
 
+# A function to check for a pin
+# First param is the pin name
+# Second param is a descriptor of the pin, which is shown in the REPL when it checks for the pin.
+# If you're using a board not made by Adafruit, you can use this function to search for non-standard pin names.
+def check_for_pin(pin):
+    """Check for a pin in board module.
+    If you're using a board not made by Adafruit, you can use this function to search for non-standard pin names.
+    You can 'import board' and then dir(board) to see what pins your board has."""
 
-def get_button_pins():
-    """List all the board's built-in buttons"""
-
-    button_count=0
-
-    for item in dir(board):
-        if item.startswith("BUTTON"):
-            button_count += 1
-            check_for_pin(item, "Built-in buttons")
-
-    if (button_count == 0):
-        check_for_pin("BUTTON*", "Built-in button")
+    if hasattr(board, pin):
+        pin_detected = True
+    else:
+        pin_detected = False
+    print(pin,  pin_detected)
+    return pin_detected
