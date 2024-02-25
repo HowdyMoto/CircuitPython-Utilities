@@ -46,6 +46,10 @@ def get_board_pins():
             descriptor = "Built-in DotStar LED Serial Clock"
         elif item == "DOTSTAR_DATA":
             descriptor = "Built-in DotStar color data"
+        # found on Adafruit Clue
+        elif item == "WHITE_LEDS":
+            descriptor = "Built-in white LEDs"
+
 
         # I2C related pins
         elif item == "I2C":
@@ -90,7 +94,7 @@ def get_board_pins():
         # Built-in display
         elif item == "DISPLAY":
             descriptor = "Built-in display"
-        
+
         # TFT display pins
         elif item == "TFT_BACKLIGHT":
             descriptor = "TFT display backlight control"
