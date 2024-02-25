@@ -90,6 +90,7 @@ def get_board_pins():
         # Built-in display
         elif item == "DISPLAY":
             descriptor = "Built-in display"
+        
         # TFT display pins
         elif item == "TFT_BACKLIGHT":
             descriptor = "TFT display backlight control"
@@ -111,6 +112,20 @@ def get_board_pins():
             descriptor = "TFT display write"
         elif item == "TFT_RD":
             descriptor = "TFT display read"
+
+        # LCD display pins
+        elif item == "LCD_BCKL":
+            descriptor = "LCD display backlight control"
+        elif item == "LCD_CLK":
+            descriptor = "LCD display  SPI serial clock"
+        elif item == "LCD_CS":
+            descriptor = "LCD display chip select"
+        elif item == "LCD_D_C":
+            descriptor = "LCD display data/command select"
+        elif item == "LCD_MOSI":
+            descriptor = "LCD display SPI Master Out Slave In"
+        elif item == "LCD_RST":
+            descriptor = "LCD display reset"
 
         # LCD pins
         elif item.startswith("LCD_DATA"):
@@ -179,7 +194,7 @@ def get_board_pins():
             descriptor = "ESP32 boot select"
 
 
-        # Other pins
+        # Power pins
         elif item == "VOLTAGE_MONITOR":
             descriptor = "Supply voltage monitor"
         elif item == "BATTERY":
@@ -188,14 +203,24 @@ def get_board_pins():
             descriptor = "USB VBUS power detection"
         elif item == "SMPS_MODE":
             descriptor = "Switched-Mode Power Supply control"
+        elif item == "PE_POWER":
+            descriptor = "Peripheral power"
+
+        # Boot pins
         elif item == "BOOT0":
             descriptor = "Bootloader select"
 
         # SD card
         elif item == "SD_CS":
             descriptor = "SD card SPI CS"
+        elif item == "SD_CLK":
+            descriptor = "SD card SPI clock"
         elif item == "SD_CARD_DETECT":
             descriptor = "SD card detection"
+        elif item == "SD_MISO":
+            descriptor = "SD card SPI Master In Slave Out"
+        elif item == "SD_MOSI":
+            descriptor = "SD card SPI Master Out Slave In"
 
         # Camera
         elif item == "CAMERA_VSYNC":
