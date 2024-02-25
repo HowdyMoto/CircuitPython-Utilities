@@ -7,7 +7,7 @@
 
 import board
 
-COLUMN1_WIDTH = 22
+COLUMN1_WIDTH = 25
 
 def get_board_pins():
     """Show all board module info.
