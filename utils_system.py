@@ -95,7 +95,8 @@ def get_microcontroller_info():
 
 
 def get_builtin_modules():
-    """List all this board's built-in CircuitPython modules"""
+    """List all this board's built-in CircuitPython modules.
+    The output from the help command can't be formatted, so it's a little tough to read."""
 
-    print("\nBuilt-in modules:\n")
+    print("\n=== Built-in modules ===\n")
     help("modules")
