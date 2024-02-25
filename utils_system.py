@@ -39,8 +39,8 @@ def get_os_info():
 
 
 def get_board_info():
-    """Show all board module info.
-    Mostly shows pin names, and then the board's named pins."""
+    """Show board module info. Mostly shows pin names.
+    For more help with your board's pins, see utils_pins.py """
 
     print("\n=== board module info ===\n")
 
