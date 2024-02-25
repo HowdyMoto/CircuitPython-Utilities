@@ -10,15 +10,9 @@ import board
 COLUMN1_WIDTH = 25
 
 def get_board_pins():
-    """Show all board module info.
-    Mostly shows pin names, and then the board's named pins."""
+    """ Show pins from board module """
 
-    print("\n=== board pins detail ===\n")
-
-    boardNameBoard = board.board_id
-    boardNameBoardDescriptor = "Board Name:"
-    print(f"{boardNameBoardDescriptor: <{COLUMN1_WIDTH}} {boardNameBoard:<{COLUMN1_WIDTH}}")
-    print("Board pins:")
+    print("\n=== board pin details ===\n")
 
     pins = dir(board)
     pins.sort()
@@ -50,7 +44,6 @@ def get_board_pins():
         elif item == "WHITE_LEDS":
             descriptor = "Built-in white LEDs"
 
-
         # I2C related pins
         elif item == "I2C":
             descriptor = "I2C Bus"
@@ -78,9 +71,9 @@ def get_board_pins():
         # UART
         elif item.startswith("UART"):
             descriptor = "UART"
-        elif item == "RX":
+        elif item == "RX" or "RX1":
             descriptor = "UART receive"
-        elif item == "TX":
+        elif item == "TX" or "TX1":
             descriptor = "UART transmit"
 
         # Buttons
@@ -162,9 +155,7 @@ def get_board_pins():
             descriptor = "Touchscreen Y up"
 
         # Audio in and out
-        elif item == "SPEAKER":
-            descriptor = "Speaker output"
-        elif item == "AUDIO_OUT":
+        elif item == "SPEAKER" or "AUDIO_OUT":
             descriptor = "Speaker output"
         elif item == "SPEAKER_ENABLE":
             descriptor = "Speaker enable"
@@ -174,10 +165,8 @@ def get_board_pins():
             descriptor = "Microphone PDM clock"
 
         # Other misc sensors
-        elif item == "LIGHT":
+        elif item == "LIGHT" or "L" :
             descriptor = "Light sensor"
-        elif item == "L":
-            descriptor = "Light sensor TEST"
         elif item == "TEMPERATURE":
             descriptor = "Temperature sensor"
 
@@ -216,7 +205,7 @@ def get_board_pins():
 
         # SD card
         elif item == "SD_CS":
-            descriptor = "SD card SPI CS"
+            descriptor = "SD card SPI chip select"
         elif item == "SD_CLK":
             descriptor = "SD card SPI clock"
         elif item == "SD_CARD_DETECT":
@@ -299,10 +288,7 @@ def get_matching_pins():
     for pins in sorted(microcontroller_pins):
         print(pins)
 
-# A function to check for a pin
-# First param is the pin name
-# Second param is a descriptor of the pin, which is shown in the REPL when it checks for the pin.
-# If you're using a board not made by Adafruit, you can use this function to search for non-standard pin names.
+# Check for a specific pin
 def check_for_pin(pin):
     """Check for a pin in board module.
     If you're using a board not made by Adafruit, you can use this function to search for non-standard pin names.
