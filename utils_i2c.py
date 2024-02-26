@@ -35,7 +35,7 @@ def get_i2c_info():
         else:
             descriptor = ""
         if descriptor != "":
-            print(f"\t{item: <{COLUMN1_WIDTH}} {descriptor:<{COLUMN1_WIDTH}}")
+            print(f"\t{item}\t{descriptor}")
 
     if i2c_pin_found and stemma_i2c_pin_found:
         if board.I2C() == board.STEMMA_I2C():
