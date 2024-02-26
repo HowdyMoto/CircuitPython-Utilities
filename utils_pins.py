@@ -45,8 +45,10 @@ def get_board_pins2():
         "UART1": "UART",
         "UART2": "UART",
         "RX": "UART receive",
+        "RX0": "UART receive",
         "RX1": "UART receive",
         "TX": "UART transmit",
+        "TX0": "UART transmit",
         "TX1": "UART transmit",
 
         # Misc buttons
