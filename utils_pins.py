@@ -9,7 +9,7 @@ import board
 
 COLUMN1_WIDTH = 25
 
-def get_board_pins2():
+def get_board_pins():
     """ Show pins from board module """
     print("\n=== board pin details ===\n")
 
