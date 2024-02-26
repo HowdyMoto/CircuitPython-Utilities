@@ -9,237 +9,171 @@ import board
 
 COLUMN1_WIDTH = 25
 
-def get_board_pins():
+def get_board_pins2():
     """ Show pins from board module """
-
     print("\n=== board pin details ===\n")
+
+    # Dictionary mapping pin name prefixes or exact names to descriptions
+    pin_descriptions = {
+        "LED": "Built-in LED",
+        "WHITE_LEDS": "Built-in white LEDs",
+        "NEOPIXEL": "Built-in Neopixel",
+        "APA102_SCK": "Built-in DotStar LED Serial Clock",
+        "APA102_MOSI":"Built-in DotStar LED Master Out Slave In",
+        "DOTSTAR_CLOCK": "Built-in DotStar LED Serial Clock",
+        "DOTSTAR_DATA": "Built-in DotStar color data",
+
+        # I2C bus
+        "I2C": "I2C Bus",
+        "I2C0": "I2C Bus",
+        "I2C1": "I2C Bus",
+
+        "STEMMA_I2C": "Stemma I2C Connector",
+        "SCL": "I2C Serial Clock Line",
+        "SDA": "I2C Serial Data Line",
+        "SCK": "I2C Serial Clock",
+
+        # SPI bus
+        "SPI": "SPI Bus",
+        "MOSI": "SPI Master Out Slave In",
+        "MISO": "SPI Master In Slave Out",
+        "SS": "SPI Slave Select",
+        "CS": "SPI Slave Select (alt name)",
+
+        # UART
+        "UART": "UART",
+        "UART1": "UART",
+        "UART2": "UART",
+        "RX": "UART receive",
+        "RX1": "UART receive",
+        "TX": "UART transmit",
+        "TX1": "UART transmit",
+
+        # Misc buttons
+        "BUTTON": "Built-in button",
+        "SLIDE_SWITCH": "Built-in switch",
+        "POWER_SWITCH": "Built-in power switch",
+
+        # Built-in Displau
+        "DISPLAY": "Built-in display",
+
+        # TFT display pins
+        "TFT_BACKLIGHT": "TFT display backlight control",
+        "TFT_CS":"TFT display chip select for SPI bus",
+        "TFT_RS": "TFT register or display data/command select",
+        "TFT_DC": "TFT register or display data/command select",
+        "TFT_MOSI": "TFT display SPI Master Out Slave In",
+        "TFT_RESET": "TFT display reset",
+        "TFT_SCK": "TFT display SPI serial clock",
+        "TFT_TE": "TFT tearing effect/prevention",
+        "TFT_WR": "TFT display write",
+        "TFT_RD": "TFT display read",
+
+        # LCD display pins
+        "LCD_BCKL": "LCD display backlight control",
+        "LCD_CLK": "LCD display  SPI serial clock",
+        "LCD_CS": "LCD display chip select",
+        "LCD_D_C": "LCD display data/command select",
+        "LCD_MOSI": "LCD display SPI Master Out Slave In",
+        "LCD_RST": "LCD display reset",
+        "LCD_DATA0": "LCD data",  
+        "LCD_DATA1": "LCD data",                 
+        "LCD_DATA2": "LCD data",                 
+        "LCD_DATA3": "LCD data",                 
+        "LCD_DATA4": "LCD data",                 
+        "LCD_DATA5": "LCD data",                 
+        "LCD_DATA6": "LCD data",                 
+        "LCD_DATA7": "LCD data",                 
+
+        # LCD pins
+        "LCD_DATA": "LCD data",
+
+        # E-ink display
+        "EPD_BUSY": "E-ink display busy signal",
+        "EPD_CS": "E-ink display chip select for SPI bus",
+        "EPD_DC": "E-ink display data/command select",
+        "EPD_MISO": "E-ink display SPI Master In Slave Out",
+        "EPD_MOSI": "E-ink display SPI Master Out Slave In",
+        "EPD_RESET": "E-ink display display reset",
+        "EPD_SCK": "E-ink display display SPI serial clock",
+
+        # Touchscreen pins
+        "TOUCH_XL":"Touchscreen X left",
+        "TOUCH_XR": "Touchscreen X right",
+        "TOUCH_YD": "Touchscreen Y down",
+        "TOUCH_YU": "Touchscreen Y up",
+
+        # Audio in and out
+        "SPEAKER": "Speaker output",
+        "AUDIO_OUT": "Speaker output",
+        "SPEAKER_ENABLE": "Speaker enable",
+        "MICROPHONE_DATA": "Microphone PDM data",
+        "MICROPHONE_CLOCK": "Microphone PDM clock",
+
+        # Other misc sensors
+        "LIGHT" : "Light sensor",
+        "L" : "Light sensor",
+        "TEMPERATURE": "Temperature sensor",
+
+        # ESP32 co-processor pins
+        "ESP_BUSY": "ESP32 co-processor busy status",
+        "ESP_CS": "ESP32 co-processor SPI chip select",
+        "ESP_RESET": "ESP32 co-processor reset",
+        "ESP_RTS": "ESP32 co-processor request-to-send for UART",
+        "ESP_TX": "ESP32 co-processor transmit to MCU",
+        "ESP_RX": "ESP32 co-processor receive from MCU",
+        "ESP_GPIO0": "ESP32 boot select",
+
+
+        # Power pins
+        "VOLTAGE_MONITOR": "Supply voltage monitor",
+        "BATTERY": "Battery voltage monitor",
+        "VBUS_SENSE": "USB VBUS power detection",
+        "SMPS_MODE": "Switched-Mode Power Supply control",
+        "PE_POWER": "Peripheral power",
+
+        # Boot pins
+        "BOOT0": "Bootloader select",
+
+        # SD card
+        "SD_CS": "SD card SPI chip select",
+        "SD_CLK": "SD card SPI clock",
+        "SD_CARD_DETECT": "SD card detection",
+        "SD_MISO":"SD card SPI Master In Slave Out",
+        "SD_MOSI": "SD card SPI Master Out Slave In",
+
+        # Camera
+        "CAMERA_VSYNC":"Camera vertical sync signal",
+        "CAMERA_HSYNC": "Camera horizontal sync signal",
+        "CAMERA_HREF": "Camera horizontal reference",
+        "CAMERA_XCLK": "Camera external clock",
+        "CAMERA_PCLK": "Camera pixel clock",
+        "CAMERA_PWDN": "Camera power down",
+        "CAMERA_RESET": "Camera reset",
+        "CAMERA_DATA":"Camera data",
+        "CAMERA_DATA2": "Camera data",
+
+    }
 
     pins = dir(board)
     pins.sort()
 
     for item in pins:
+        descriptor = ""  # Default to empty descriptor
 
-    # Look in the board's CicrcuitPython source code mpconfigboard.h for the board to see which pins are used for board.I2C()
+        # First, check the dictionary for matching pin names
+        for prefix, description in pin_descriptions.items():
+            if item == prefix:
+                descriptor = description
+                break  # Break if a match is found
 
-        # Generic analog and digital pins
+        # then check for generic A and D pins
         if len(item) >= 2 and item[0] == "A" and item[1].isdigit():
             descriptor = "Generic analog pin"
         elif len(item) >= 2 and item[0] == "D" and item[1].isdigit():
             descriptor = "Generic digital pin"
-
-        # LED related pins
-        elif item == "LED":
-            descriptor = "Built-in Neopixel"
-        elif item == "NEOPIXEL":
-            descriptor = "Built-in Neopixel"
-        elif item == "APA102_SCK":
-            descriptor = "Built-in DotStar LED Serial Clock"
-        elif item == "APA102_MOSI":
-            descriptor = "Built-in DotStar LED Master Out Slave In"
-        elif item == "DOTSTAR_CLOCK":
-            descriptor = "Built-in DotStar LED Serial Clock"
-        elif item == "DOTSTAR_DATA":
-            descriptor = "Built-in DotStar color data"
-        # found on Adafruit Clue
-        elif item == "WHITE_LEDS":
-            descriptor = "Built-in white LEDs"
-
-        # I2C related pins
-        elif item == "I2C":
-            descriptor = "I2C Bus"
-        elif item == "STEMMA_I2C":
-            descriptor = "Stemma I2C Connector"
-        elif item.startswith("SCL"):
-            descriptor = "I2C Serial Clock Line"
-        elif item.startswith("SDA"):
-            descriptor = "I2C Serial Data Line"
-        elif item.startswith("SCK"):
-            descriptor = "I2C Serial Clock"
-
-        # SPI related pins
-        elif item == "SPI":
-            descriptor = "SPI Bus"
-        elif item == "MOSI":
-            descriptor = "SPI Master Out Slave In"
-        elif item == "MISO":
-            descriptor = "SPI Master In Slave Out"
-        elif item == "SS":
-            descriptor = "SPI Slave Select"
-        elif item == "CS":
-            descriptor = "SPI Slave Select (alt name)"
-
-        # UART
-        elif item.startswith("UART"):
-            descriptor = "UART"
-        elif item == "RX" or "RX1":
-            descriptor = "UART receive"
-        elif item == "TX" or "TX1":
-            descriptor = "UART transmit"
-
-        # Buttons
-        elif item.startswith("BUTTON"):
-            descriptor = "Built-in button"
-        elif item == "SLIDE_SWITCH":
-            descriptor = "Built-in switch"
-        elif item == "POWER_SWITCH":
-            descriptor = "Built-in power switch"
-
-        # Built-in display
-        elif item == "DISPLAY":
-            descriptor = "Built-in display"
-
-        # TFT display pins
-        elif item == "TFT_BACKLIGHT":
-            descriptor = "TFT display backlight control"
-        elif item == "TFT_CS":
-            descriptor = "TFT display chip select for SPI bus"
-        elif item == "TFT_RS":
-            descriptor = "TFT register or display data/command select"
-        elif item == "TFT_DC":
-            descriptor = "TFT register or display data/command select"
-        elif item == "TFT_MOSI":
-            descriptor = "TFT display SPI Master Out Slave In"
-        elif item == "TFT_RESET":
-            descriptor = "TFT display reset"
-        elif item == "TFT_SCK":
-            descriptor = "TFT display SPI serial clock"
-        elif item == "TFT_TE":
-            descriptor = "TFT tearing effect/prevention"
-        elif item == "TFT_WR":
-            descriptor = "TFT display write"
-        elif item == "TFT_RD":
-            descriptor = "TFT display read"
-
-        # LCD display pins
-        elif item == "LCD_BCKL":
-            descriptor = "LCD display backlight control"
-        elif item == "LCD_CLK":
-            descriptor = "LCD display  SPI serial clock"
-        elif item == "LCD_CS":
-            descriptor = "LCD display chip select"
-        elif item == "LCD_D_C":
-            descriptor = "LCD display data/command select"
-        elif item == "LCD_MOSI":
-            descriptor = "LCD display SPI Master Out Slave In"
-        elif item == "LCD_RST":
-            descriptor = "LCD display reset"
-
-        # LCD pins
-        elif item.startswith("LCD_DATA"):
-            descriptor = "LCD data"
-
-        # E-ink display
-        elif item == "EPD_BUSY":
-            descriptor = "E-ink display busy signal"
-        elif item == "EPD_CS":
-            descriptor = "E-ink display chip select for SPI bus"
-        elif item == "EPD_DC":
-            descriptor = "E-ink display data/command select"
-        elif item == "EPD_MISO":
-            descriptor = "E-ink display SPI Master In Slave Out"
-        elif item == "EPD_MOSI":
-            descriptor = "E-ink display SPI Master Out Slave In"
-        elif item == "EPD_RESET":
-            descriptor = "E-ink display display reset"
-        elif item == "EPD_SCK":
-            descriptor = "E-ink display display SPI serial clock"
-
-        # Touchscreen pins
-        elif item == "TOUCH_XL":
-            descriptor = "Touchscreen X left"
-        elif item == "TOUCH_XR":
-            descriptor = "Touchscreen X right"
-        elif item == "TOUCH_YD":
-            descriptor = "Touchscreen Y down"
-        elif item == "TOUCH_YU":
-            descriptor = "Touchscreen Y up"
-
-        # Audio in and out
-        elif item == "SPEAKER" or "AUDIO_OUT":
-            descriptor = "Speaker output"
-        elif item == "SPEAKER_ENABLE":
-            descriptor = "Speaker enable"
-        elif item == "MICROPHONE_DATA":
-            descriptor = "Microphone PDM data"
-        elif item == "MICROPHONE_CLOCK":
-            descriptor = "Microphone PDM clock"
-
-        # Other misc sensors
-        elif item == "LIGHT" or "L" :
-            descriptor = "Light sensor"
-        elif item == "TEMPERATURE":
-            descriptor = "Temperature sensor"
-
-        # ESP32 co-processor pins
-        elif item == "ESP_BUSY":
-            descriptor = "ESP32 co-processor busy status"
-        elif item == "ESP_CS":
-            descriptor = "ESP32 co-processor SPI chip select"
-        elif item == "ESP_RESET":
-            descriptor = "ESP32 co-processor reset"
-        elif item == "ESP_RTS":
-            descriptor = "ESP32 co-processor request-to-send for UART"
-        elif item == "ESP_TX":
-            descriptor = "ESP32 co-processor transmit to MCU"
-        elif item == "ESP_RX":
-            descriptor = "ESP32 co-processor receive from MCU"
-        elif item == "ESP_GPIO0":
-            descriptor = "ESP32 boot select"
-
-
-        # Power pins
-        elif item == "VOLTAGE_MONITOR":
-            descriptor = "Supply voltage monitor"
-        elif item == "BATTERY":
-            descriptor = "Battery voltage monitor"
-        elif item == "VBUS_SENSE":
-            descriptor = "USB VBUS power detection"
-        elif item == "SMPS_MODE":
-            descriptor = "Switched-Mode Power Supply control"
-        elif item == "PE_POWER":
-            descriptor = "Peripheral power"
-
-        # Boot pins
-        elif item == "BOOT0":
-            descriptor = "Bootloader select"
-
-        # SD card
-        elif item == "SD_CS":
-            descriptor = "SD card SPI chip select"
-        elif item == "SD_CLK":
-            descriptor = "SD card SPI clock"
-        elif item == "SD_CARD_DETECT":
-            descriptor = "SD card detection"
-        elif item == "SD_MISO":
-            descriptor = "SD card SPI Master In Slave Out"
-        elif item == "SD_MOSI":
-            descriptor = "SD card SPI Master Out Slave In"
-
-        # Camera
-        elif item == "CAMERA_VSYNC":
-            descriptor = "Camera vertical sync signal"
-        elif item == "CAMERA_HSYNC":
-            descriptor = "Camera horizontal sync signal"
-
-        elif item == "CAMERA_HREF":
-            descriptor = "Camera horizontal reference"
-        elif item == "CAMERA_XCLK":
-            descriptor = "Camera external clock"
-        elif item == "CAMERA_PCLK":
-            descriptor = "Camera pixel clock"
-        elif item == "CAMERA_PWDN":
-            descriptor = "Camera power down"
-        elif item == "CAMERA_DATA2":
-            descriptor = "Camera horizontal sync signal"
-        elif item == "CAMERA_RESET":
-            descriptor="Camera reset"
-        elif item.startswith("CAMERA_DATA"):
-            descriptor = "Camera data"
-
-        else:
-            descriptor = ""
-        print(f"\t{item: <{COLUMN1_WIDTH}} {descriptor:<{COLUMN1_WIDTH}}")
-
+        
+        print(f"\t{item: <{COLUMN1_WIDTH}} {descriptor}")
 
 def get_microcontroller_pins():
     """Show microcontroller pin details"""
@@ -258,10 +192,6 @@ def get_matching_pins():
     print("\n=== pin name info ===\n")
 
     import microcontroller
-
-    # microcontroller.pin contains the list of pins directly provided by the CPU
-    # they are typically not labeled with friendly names.
-    # Friendly names are created in board.pins as aliases of these pins
 
     microcontroller_pins = []
 
