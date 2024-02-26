@@ -69,6 +69,12 @@ def get_board_pins2():
         "TFT_WR": "TFT display write",
         "TFT_RD": "TFT display read",
 
+        # TFT pins on Qualia devices 
+        "TFT_PINS": "GPIO connections for dot clock TFT displays",
+        "TFT_TIMINGS": "TFT timings for single-display boards ",
+        "TFT_INIT_SEQUENCE": "board's built in display initialization sequence",
+        "TFT_IO_EXPANDER": "I/O expander, for when SPI bus is on an I2C I/O expander"
+
         # LCD display pins
         "LCD_BCKL": "LCD display backlight control",
         "LCD_CLK": "LCD display  SPI serial clock",
