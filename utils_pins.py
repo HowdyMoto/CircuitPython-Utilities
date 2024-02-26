@@ -24,13 +24,8 @@ def get_board_pins2():
         "DOTSTAR_DATA": "Built-in DotStar color data",
 
         # I2C bus
-        "I2C": "I2C Bus",
-        "I2C0": "I2C Bus",
-        "I2C1": "I2C Bus",
 
         "STEMMA_I2C": "Stemma I2C Connector",
-        "SCL": "I2C Serial Clock Line",
-        "SDA": "I2C Serial Data Line",
         "SCK": "I2C Serial Clock",
 
         # SPI bus
@@ -75,7 +70,7 @@ def get_board_pins2():
         "TFT_PINS": "GPIO connections for dot clock TFT displays",
         "TFT_TIMINGS": "TFT timings for single-display boards ",
         "TFT_INIT_SEQUENCE": "board's built in display initialization sequence",
-        "TFT_IO_EXPANDER": "I/O expander, for when SPI bus is on an I2C I/O expander"
+        "TFT_IO_EXPANDER": "I/O expander, for when SPI bus is on an I2C I/O expander",
 
         # LCD display pins
         "LCD_BCKL": "LCD display backlight control",
@@ -175,8 +170,33 @@ def get_board_pins2():
                 descriptor = description
                 break  # Break if a match is found
 
+        # Then check for pins that can have multiple instances
+        # UART pins
+        if item.startswith("UART"):
+                descriptor = "UART"  
+        elif item.startswith("TX"):
+            descriptor = "UART transmit"  
+        elif item.startswith("RX"):
+            descriptor = "UART receive"  
+    
+        # I2C 
+        elif item.startswith("I2C"):
+            descriptor = "I2C bus"  
+        elif item.startswith("SCL"):
+            descriptor = "I2C serial clock line"  
+        elif item.startswith("SDA"):
+            descriptor = "I2C serial data line" 
+        
+        # Buttons
+        elif item.startswith("BUTTON"):
+            descriptor = "Built-in button"
+        
+        # LCD pins
+        elif item.startswith("LCD_DATA"):
+            descriptor = "LCD data"
+
         # then check for generic A and D pins
-        if len(item) >= 2 and item[0] == "A" and item[1].isdigit():
+        elif len(item) >= 2 and item[0] == "A" and item[1].isdigit():
             descriptor = "Generic analog pin"
         elif len(item) >= 2 and item[0] == "D" and item[1].isdigit():
             descriptor = "Generic digital pin"
