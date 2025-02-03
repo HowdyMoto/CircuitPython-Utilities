@@ -8,21 +8,18 @@ import os
 import wifi
 import ipaddress
 
-# For readability, some function calls below start by printing this string
-# Data printed inside each function indented with \t for readability
-CPUTILS_STRING = 'CP UTILS:'
-PING_IP = ipaddress.IPv4Address("8.8.8.8")
-# This shuould be a small file, since boards have very little RAM.
-FILE_DOWNLOAD_URL = "http://wifitest.adafruit.com/testwifi/index.html"
-
-
 # Connect to Wifi
-# If user doesn't specify SSID and password, it's taken from settings.toml
+# CircuitPython 9 and greater will automatically connect to Wi-Fi if settings.toml has SSID and password.
+# You can use this to manually connect to a wifi network.
+# If you call this without specifying SSID and password, attempt to read it from settings.toml
 def connect_wifi(
         ssid=os.getenv("CIRCUITPY_WIFI_SSID"),
         password=os.getenv("CIRCUITPY_WIFI_PASSWORD")
     ):
-    print(CPUTILS_STRING, "Connecting to WiFi...")
+    print("=== Connecting to WiFi... ===")
+
+    if wifi.radio.connected:
+        print(f"Already connected to Wi-Fi.\nIP Address: {wifi.radio.ipv4_address}")
 
     # If user doesn't specify ssid/pwd in the function call,
     # they should specify it in settings.toml
@@ -35,8 +32,7 @@ def connect_wifi(
         )
         return
     try:
-        print("\tSSID:", ssid)
-        print("\tpassword:", password)
+        print("\tAttempting to connect to", ssid)
         wifi.radio.connect(ssid, password)
         print("\tSuccessfully connected")
     except Exception as e:
@@ -48,23 +44,27 @@ def connect_wifi(
 # Sort by RSSI (signal strength)
 # Then, print each found SSID and RSSI
 # Finally, return an array of SSIDs and RSSIs
-def scan_wifi_networks():
-    print(CPUTILS_STRING, "Scanning for WiFi networks...")
+def get_wifi_networks():
+    print("=== Scanning for WiFi networks... ===")
 
-    networks = []
-    for network in wifi.radio.start_scanning_networks():
-        networks.append(network)
+    networks = list(wifi.radio.start_scanning_networks())  # Convert to list immediately
     wifi.radio.stop_scanning_networks()
-    networks = sorted(networks, key=lambda net: net.rssi, reverse=True)
+
+    if not networks:
+            print("\tNo Wi-Fi networks found!")
+            return []
+
+    networks.sort(key=lambda net: net.rssi, reverse=True)
     for network in networks:
         print("\t", network.ssid, "\t\trssi:", network.rssi, "dBm")
+    
     return networks
 
 
 # Print info about current WiFi network connection to the REPL.
 # Then, try a few network operations to verify it's working reliably.
 def test_wifi():
-    print(CPUTILS_STRING, "Testing Wifi connection...")
+    print("=== Testing Wifi connection... ===")
 
     # Don't bother with tests if not connected to Wifi
     if not wifi.radio.enabled:
@@ -91,7 +91,8 @@ def test_wifi():
     print("\tAP Country:", wifi.radio.ap_info.country)
     print("\tAP RSSI:", wifi.radio.ap_info.rssi)
 
-    # Second, ping PING_IP - the primary DNS server for Google DNS
+    # Second, ping the primary DNS server for Google DNS
+    PING_IP = ipaddress.IPv4Address("8.8.8.8")
     ping = wifi.radio.ping(ip=PING_IP)
     if ping is None:
         print("\tCouldn't ping 'google.com' successfully")
@@ -115,48 +116,3 @@ def test_wifi():
             print("\t\tSuccessful request, but empty response")
     except Exception as e:
         print("\tFailed to request data from", TEXT_URL, e)
-
-
-# Download a ~1MB file to test speed
-def test_bandwidth():
-    print(CPUTILS_STRING, "Testing download bandwidth...")
-
-    # Abort if not connected to Wifi
-    if not wifi.radio.enabled:
-        print("\tWifi radio disabled")
-        return
-    if not wifi.radio.connected:
-        print("\tNot connected to WiFi")
-        return
-
-    import time
-    import socketpool
-    import ssl
-    import adafruit_requests
-
-    pool = socketpool.SocketPool(wifi.radio)
-    context = ssl.create_default_context()
-    requests = adafruit_requests.Session(pool, context)
-
-    start_time = time.monotonic()
-    try:
-        print("\tHTTP request:", FILE_DOWNLOAD_URL)
-        response = requests.get(FILE_DOWNLOAD_URL)
-        print("\tStatus code:", response.status_code)
-        print("\tHeaders:")
-        for header, value in response.headers.items():
-            print(f"\t\t{header}: {value}")
-
-        if response.status_code == 200:
-            # Calculate download speed
-            end_time = time.monotonic()
-            duration = end_time - start_time    # Time taken for download in seconds
-            data_length = len(response.content)  # Length of data in bytes
-            speed_bps = data_length / duration  # Speed in bytes per second
-
-            print("\tDownloaded", data_length, "bytes in", duration, "seconds.")
-            print("\tDownload speed:", speed_bps, "Bytes per second.")
-        else:
-            print("Failed to download test file. Status code:", response.status_code)
-    except Exception as e:
-        print("\tHTTP request error:", e)

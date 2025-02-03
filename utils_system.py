@@ -14,9 +14,7 @@ def get_os_info():
     import os
     import gc
 
-    boardNameOS = os.uname().machine
-    print("Board name:\t", boardNameOS)
-
+    print("Board name:\t", os.uname().machine)
     print("System name (CPU):\t", os.uname().sysname)
     print("CircuitPython ver:\t", os.uname().release)
     print("Version:\t\t", os.uname().version)
@@ -80,7 +78,7 @@ def get_microcontroller_info():
     print("CPU 0 frequency:\t", cpu_frequency)
 
     cpu_temperature = microcontroller.cpu.temperature
-    if cpu_temperature == None:
+    if cpu_temperature is None:
         cpu_temperature = "Not available"
     print("CPU 0 temperature:\t", cpu_temperature)
 
