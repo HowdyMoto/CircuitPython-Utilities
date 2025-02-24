@@ -10,18 +10,26 @@ import digitalio
 import time
 
 # Find available button pins
-button_pins = [name for name in dir(board) if name.startswith("BUTTON")]
+button_pins = []
+for name in dir(board):
+    if name.startswith("BUTTON"):
+        button_pins.append(name)
 
 if not button_pins:
-    print("No buttons detected! Check your board's documentation.")
+    print("No built-in buttons detected!\nThis code looks for pins named BUTTON.")
 else:
     print("=== Detected Buttons ===")
     for button in button_pins:
         print(button)
 
 # Convert detected buttons to DigitalInOut objects
-buttons = {name: digitalio.DigitalInOut(getattr(board, name)) for name in button_pins}
+buttons = {}  # Create an empty dictionary
+for name in button_pins:
+    pin = getattr(board, name)  # Get the actual pin from the board module
+    buttons[name] = digitalio.DigitalInOut(pin)  # Create DigitalInOut object and store it
 
+# Now `buttons` is a dictionary where each key is a button name, 
+# and each value is a DigitalInOut object for that button.
 # Configure buttons as input with pull-ups
 for button in buttons.values():
     button.switch_to_input(pull=digitalio.Pull.UP)
