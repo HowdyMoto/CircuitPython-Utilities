@@ -2,6 +2,7 @@ import time
 import board
 import adafruit_lis3dh
 
+# Work in progress - need more boards with built-in accelerometers.
 # TODO Define enum for types of output formats, such as:
 # Raw values
 # Raw values divided by -9.8 to give you Gs

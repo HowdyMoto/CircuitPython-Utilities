@@ -17,56 +17,31 @@ For example, to see if a board has a built-in ambient light sensor, I look for a
 Over time, I hope this set of tools can add more support for non-Adafruit boards, but I will first focus on Adafruit boards. If you wish to see wider support for other manufacturers' boards, please submit PRs.
 
 ### utils_system.py
-A collection of functions that show useful information about your board. Great for quickly gathering details without needing to look up spec sheets.
-
-To print (to the REPL) lots of educational details about your board:
-```
-import utils_sysetem.py
-
-utils_system.print_board_info()
-```
-`get_all_info()` calls a series of fucntions that gather more granular info about your board. 
-
-If you want just a subset of that information, pick from the functions in get_all_info() that you need, or look inside of `utils_sysetem.py`. It's pretty self-explanatory.
+A collection of functions that show useful information about your board:
+* Microcontroller details
+* Built-in modules
+* OS Info: Board name, CP version, memory, storage
+* Board info (Pin info mostly)
 
 ### utils_wifi.py
 A collection of functions that help you find, connect to, and test wifi connections. Currently only useful for esp32 chips with native wi-fi. Boards with esp32 co-processors need more work.
 
-To connect to wifi:
-```
-import utils_wifi.py
-utils_wifi.connect_wifi()
-```
+### utils_buttons.py
+Show the names of built-in buttons, and show which ones are being actively pressed. Only looks for boards with BUTTON pins.
 
-To find all of the local available WiFi networks, then put them into an array, sorted by signal strength:
-```
-import utils_wifi.py
-utils_wifi.scan_wifi_networks()
-```
+### utils_display.py
+A collection of functions that show details about your board's built-in display.
 
-To gather details about your wifi connection and perform some basic tests:
-```
-import utils_wifi.py
-utils_wifi.test_wifi()
-```
+### utils_pins.py
+A collection of functions that show details about your board's pins.
 
-To do an HTTP get request and report bandwith, you can try:
-```
-import utils_wifi.py
-utils_wifi.test_bandwidth()
-```
-Admittedly, this isn't very helpful at all, since you can't download much of anything to a microcontroller that has so little memory and storage. This is a theoretical test, not a practical test at all. But I'll keep working on ways to test bandwidth, so that future boards that have more memory and storage can attempt a more robust test.
+### utils_12c.py
+A collection of functions that show details about your board's I2C bus.
 
 ### utils_benchmark.py
 Very simple benchmarks that help you understand the realtive performance of your microprocessor.
 
-To see how fast your processor does integer and floating point math:
-```
-import utils_benchmark.py
-utils_benchmark.run_benchmark()
-```
-
-For example, here are some results I've seen:
+Some results I've seen:
 | Manufacturer  | Board Name | Status |
 | ------------- | ------------- | ------------- |
 | Adafruit  | Qt Py SAMD21 | 28.72s integer, 44.33 float |
