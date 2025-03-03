@@ -77,6 +77,5 @@ _________________
 _________________
 
 ## TODO
-- gather info on built-in buttons
-- report whether wifi capabilities exist, for ESPSPI chips and for native wifi on newer ESP32 CPUs
+- report on ESP32 wi-fi co-processors
 - report on bluetooth capabilities
