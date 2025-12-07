@@ -12,6 +12,14 @@ NUM_OPERATIONS = 1000000
 
 # Function to benchmark integer math
 def int_math():
+    """Benchmark integer addition and subtraction operations.
+
+    Performs NUM_OPERATIONS (1 million) integer math operations using
+    random integers and measures execution time.
+
+    Returns:
+        float: Elapsed time in seconds.
+    """
     print("\tPerforming", NUM_OPERATIONS, "ingeter math operations")
 
     int_random1 = random.randint(0,1000)
@@ -28,6 +36,14 @@ def int_math():
 
 # Function to benchmark floating point math
 def float_math():
+    """Benchmark floating-point addition and subtraction operations.
+
+    Performs NUM_OPERATIONS (1 million) floating-point math operations
+    using random floats and measures execution time.
+
+    Returns:
+        float: Elapsed time in seconds.
+    """
     print("\tPerforming", NUM_OPERATIONS, "float math operations")
 
     float_random1 = random.uniform(1.0,1000.0)
@@ -44,6 +60,12 @@ def float_math():
 
 # Benchmarking
 def run_benchmark():
+    """Run integer and floating-point math benchmarks and print results.
+
+    Executes both int_math() and float_math() benchmarks, then prints
+    the execution times. Useful for comparing performance across different
+    CircuitPython boards.
+    """
     print("Running math benchmark...")
 
     time_int = int_math()

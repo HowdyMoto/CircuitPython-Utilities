@@ -3,7 +3,7 @@
 # And by Adafruit/Kattni Rembor's CircuitPython Essentials: https://learn.adafruit.com/circuitpython-essentials/circuitpython-essentials
 # MIT license
 
-""" Helper functions for your board's buit-in display """
+"""Helper functions for your board's built-in display."""
 
 import board
 
@@ -48,6 +48,12 @@ def get_display_info():
         print("board.DISPLAY pin not found")
     
 def rotate_display(angle):
+    """Rotate the built-in display to a specified angle.
+
+    Args:
+        angle (int): Rotation angle in degrees. Valid values are
+            typically 0, 90, 180, or 270.
+    """
     display = board.DISPLAY
     display.rotation = angle
     print("\nDisplay rotated to", angle)

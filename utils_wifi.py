@@ -1,21 +1,33 @@
-# utils_wifi.py -- Helper functions for wifi
 # By @howdymoto / Wright Bagwell
 # Inspired by TodBot's circuitpython-tricks: https://github.com/todbot/circuitpython-tricks
 # And by Adafruit/Kattni Rembor's CircuitPython Essentials: https://learn.adafruit.com/circuitpython-essentials/circuitpython-essentials
 # MIT license
 
+"""Helper functions for WiFi connectivity and network diagnostics.
+
+Functions for connecting to WiFi networks, scanning for available networks,
+and testing connection reliability. Requires ESP32 or other WiFi-capable board.
+"""
+
 import os
 import wifi
 import ipaddress
 
-# Connect to Wifi
-# CircuitPython 9 and greater will automatically connect to Wi-Fi if settings.toml has SSID and password.
-# You can use this to manually connect to a wifi network.
-# If you call this without specifying SSID and password, attempt to read it from settings.toml
 def connect_wifi(
         ssid=os.getenv("CIRCUITPY_WIFI_SSID"),
         password=os.getenv("CIRCUITPY_WIFI_PASSWORD")
     ):
+    """Connect to a WiFi network.
+
+    CircuitPython 9+ automatically connects if settings.toml has credentials.
+    Use this to manually connect or reconnect to a network.
+
+    Args:
+        ssid (str, optional): Network name. Defaults to CIRCUITPY_WIFI_SSID
+            from settings.toml.
+        password (str, optional): Network password. Defaults to
+            CIRCUITPY_WIFI_PASSWORD from settings.toml.
+    """
     print("=== Connecting to WiFi... ===")
 
     if wifi.radio.connected:
@@ -40,11 +52,16 @@ def connect_wifi(
     return
 
 
-# Look for available WiFI networks (SSIDs)
-# Sort by RSSI (signal strength)
-# Then, print each found SSID and RSSI
-# Finally, return an array of SSIDs and RSSIs
 def get_wifi_networks():
+    """Scan for available WiFi networks.
+
+    Scans for nearby WiFi networks, sorts them by signal strength (RSSI),
+    and prints each network's SSID and signal strength.
+
+    Returns:
+        list: Network objects sorted by RSSI (strongest first), or empty
+            list if no networks found. Each object has .ssid and .rssi attrs.
+    """
     print("=== Scanning for WiFi networks... ===")
 
     networks = list(wifi.radio.start_scanning_networks())  # Convert to list immediately
@@ -61,9 +78,15 @@ def get_wifi_networks():
     return networks
 
 
-# Print info about current WiFi network connection to the REPL.
-# Then, try a few network operations to verify it's working reliably.
 def test_wifi():
+    """Test WiFi connection with diagnostics and connectivity checks.
+
+    Prints detailed connection info (IP, MAC, DNS, gateway, AP details),
+    then performs a ping test to Google DNS (8.8.8.8) and an HTTP request
+    to Adafruit's test server to verify connectivity.
+
+    Requires: wifi radio enabled and connected to a network.
+    """
     print("=== Testing Wifi connection... ===")
 
     # Don't bother with tests if not connected to Wifi
