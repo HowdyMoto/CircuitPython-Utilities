@@ -83,7 +83,7 @@ def get_microcontroller_info():
     print("CPU 0 temperature:\t", cpu_temperature)
 
     cpu_voltage = microcontroller.cpu.voltage
-    if cpu_voltage == None:
+    if cpu_voltage is None:
         cpu_voltage = "Not available"
     print("CPU 0 voltage:\t", cpu_voltage)
 

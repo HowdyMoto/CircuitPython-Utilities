@@ -20,7 +20,7 @@ def int_math():
     Returns:
         float: Elapsed time in seconds.
     """
-    print("\tPerforming", NUM_OPERATIONS, "ingeter math operations")
+    print("\tPerforming", NUM_OPERATIONS, "integer math operations")
 
     int_random1 = random.randint(0,1000)
     int_random2 = random.randint(0,1000)
@@ -53,7 +53,7 @@ def float_math():
 
     for _ in range(NUM_OPERATIONS):
         result += float_random1
-        result -= float_random1
+        result -= float_random2
 
     end_time = time.monotonic()
     return end_time - start_time
