@@ -9,56 +9,77 @@ import board
 import digitalio
 import time
 
-# Find available button pins
-button_pins = []
-for name in dir(board):
-    if name.startswith("BUTTON"):
-        button_pins.append(name)
 
-if not button_pins:
-    print("No built-in buttons detected!\nThis code looks for pins named BUTTON.")
-else:
+def get_buttons():
+    """Detect built-in buttons and return them as configured DigitalInOut objects.
+
+    Scans the board module for pins starting with "BUTTON", configures them
+    as inputs with pull-ups, and returns them in a dictionary.
+
+    Returns:
+        dict: Dictionary mapping button names (str) to DigitalInOut objects.
+            Empty dict if no buttons are found.
+    """
+    button_pins = []
+    for name in dir(board):
+        if name.startswith("BUTTON"):
+            button_pins.append(name)
+
+    if not button_pins:
+        print("No built-in buttons detected!\nThis code looks for pins named BUTTON.")
+        return {}
+
     print("=== Detected Buttons ===")
     for button in button_pins:
         print(button)
 
-# Convert detected buttons to DigitalInOut objects
-buttons = {}  # Create an empty dictionary
-for name in button_pins:
-    pin = getattr(board, name)  # Get the actual pin from the board module
-    buttons[name] = digitalio.DigitalInOut(pin)  # Create DigitalInOut object and store it
+    buttons = {}
+    for name in button_pins:
+        pin = getattr(board, name)
+        buttons[name] = digitalio.DigitalInOut(pin)
 
-# Now `buttons` is a dictionary where each key is a button name, 
-# and each value is a DigitalInOut object for that button.
-# Configure buttons as input with pull-ups
-for button in buttons.values():
-    button.switch_to_input(pull=digitalio.Pull.UP)
-
-# Track previous button states (default to True = not pressed)
-button_states = {name: True for name in button_pins}
-
-print(f"Monitoring {len(buttons)} button(s)...")
-
-try:
-    while True:
-        for name, button in buttons.items():
-            current_state = button.value  # Read button state
-
-            # Detect press (HIGH -> LOW)
-            if not current_state and button_states[name]:
-                print(f"{name} PRESSED!")
-
-            # Detect release (LOW -> HIGH)
-            if current_state and not button_states[name]:
-                print(f"{name} RELEASED!")
-
-            # Update stored state
-            button_states[name] = current_state
-
-        time.sleep(0.05)  # Delay to prevent excessive polling
-
-finally:
-    # Clean up resources on exit
     for button in buttons.values():
-        button.deinit()
-    print("Buttons deinitialized.")
+        button.switch_to_input(pull=digitalio.Pull.UP)
+
+    return buttons
+
+
+def monitor_buttons(buttons=None):
+    """Monitor buttons for press and release events.
+
+    Polls the given buttons in a loop, printing messages on press and release.
+    If no buttons dict is provided, calls get_buttons() to detect them.
+
+    Args:
+        buttons (dict, optional): Dictionary of button names to DigitalInOut objects,
+            as returned by get_buttons(). If None, buttons are auto-detected.
+    """
+    if buttons is None:
+        buttons = get_buttons()
+
+    if not buttons:
+        return
+
+    print(f"Monitoring {len(buttons)} button(s)...")
+
+    button_states = {name: True for name in buttons}
+
+    try:
+        while True:
+            for name, button in buttons.items():
+                current_state = button.value
+
+                if not current_state and button_states[name]:
+                    print(f"{name} PRESSED!")
+
+                if current_state and not button_states[name]:
+                    print(f"{name} RELEASED!")
+
+                button_states[name] = current_state
+
+            time.sleep(0.05)
+
+    finally:
+        for button in buttons.values():
+            button.deinit()
+        print("Buttons deinitialized.")
